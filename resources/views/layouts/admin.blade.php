@@ -140,7 +140,153 @@
         select {
             color: #d1d5db;
         }
+
+        /* Flatpickr Dark Theme */
+        .flatpickr-calendar {
+            background: #1a1a1a !important;
+            border: 1px solid rgba(245, 158, 11, 0.2) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+
+        .flatpickr-calendar.arrowTop:before,
+        .flatpickr-calendar.arrowTop:after {
+            border-bottom-color: #1a1a1a !important;
+        }
+
+        .flatpickr-months {
+            background: #1a1a1a !important;
+            border-radius: 16px 16px 0 0 !important;
+            padding: 8px 0 !important;
+        }
+
+        .flatpickr-month {
+            color: #ffffff !important;
+            fill: #ffffff !important;
+        }
+
+        .flatpickr-current-month {
+            color: #ffffff !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+        }
+
+        .flatpickr-current-month select,
+        .flatpickr-current-month .numInputWrapper input {
+            color: #ffffff !important;
+            background: transparent !important;
+        }
+
+        .flatpickr-prev-month,
+        .flatpickr-next-month {
+            color: #f59e0b !important;
+            fill: #f59e0b !important;
+        }
+
+        .flatpickr-prev-month:hover,
+        .flatpickr-next-month:hover {
+            background: rgba(245, 158, 11, 0.1) !important;
+            border-radius: 8px !important;
+        }
+
+        .flatpickr-weekdays {
+            background: #1a1a1a !important;
+        }
+
+        .flatpickr-weekday {
+            color: #f59e0b !important;
+            font-size: 11px !important;
+            font-weight: 600 !important;
+        }
+
+        .flatpickr-days {
+            border: none !important;
+        }
+
+        .dayContainer {
+            border: none !important;
+        }
+
+        .flatpickr-day {
+            color: #d1d5db !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
+        }
+
+        .flatpickr-day:hover {
+            background: rgba(245, 158, 11, 0.1) !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+            color: #f59e0b !important;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            border-color: #f59e0b !important;
+            color: #000000 !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.inRange {
+            background: rgba(245, 158, 11, 0.15) !important;
+            border-color: rgba(245, 158, 11, 0.1) !important;
+            color: #f59e0b !important;
+            box-shadow: -5px 0 0 rgba(245, 158, 11, 0.15), 5px 0 0 rgba(245, 158, 11, 0.15) !important;
+        }
+
+        .flatpickr-day.startRange,
+        .flatpickr-day.endRange {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+            border-color: #f59e0b !important;
+            color: #000000 !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.today {
+            border-color: rgba(245, 158, 11, 0.5) !important;
+            color: #f59e0b !important;
+        }
+
+        .flatpickr-day.today:hover {
+            background: rgba(245, 158, 11, 0.15) !important;
+        }
+
+        .flatpickr-day.flatpickr-disabled {
+            color: #4b5563 !important;
+        }
+
+        .numInputWrapper span svg path {
+            fill: #f59e0b !important;
+        }
+
+        .flatpickr-time {
+            background: #1a1a1a !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+        }
+
+        .flatpickr-time input,
+        .flatpickr-time .flatpickr-am-pm {
+            color: #ffffff !important;
+            background: transparent !important;
+        }
+
+        .flatpickr-time input:hover,
+        .flatpickr-time .flatpickr-am-pm:hover {
+            background: rgba(245, 158, 11, 0.1) !important;
+        }
+
+        .flatpickr-input {
+            cursor: pointer !important;
+        }
+
+        .flatpickr-input.active {
+            border-color: rgba(245, 158, 11, 0.5) !important;
+        }
     </style>
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     @stack('styles')
 </head>
@@ -333,6 +479,71 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    @stack('scripts')
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Auto-initialize all date inputs with flatpickr
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Date only inputs
+            document.querySelectorAll('input[type="date"]').forEach(function(el) {
+                flatpickr(el, {
+                    dateFormat: 'Y-m-d',
+                    altInput: true,
+                    altFormat: 'D, d M Y',
+                    allowInput: false,
+                });
+            });
+
+            // Datetime-local inputs (for event start/end)
+            document.querySelectorAll('input[type="datetime-local"]').forEach(function(el) {
+                flatpickr(el, {
+                    enableTime: true,
+                    dateFormat: 'Y-m-d H:i',
+                    altInput: true,
+                    altFormat: 'D, d M Y at h:i K',
+                    allowInput: false,
+                    time_24hr: false,
+                    minuteIncrement: 15,
+                });
+            });
+
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Auto-initialize all date inputs with flatpickr
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Date only inputs
+            document.querySelectorAll('input[type="date"]').forEach(function(el) {
+                flatpickr(el, {
+                    dateFormat: 'Y-m-d',
+                    altInput: true,
+                    altFormat: 'D, d M Y',
+                    allowInput: false,
+                });
+            });
+
+            // Datetime-local inputs (for event start/end)
+            document.querySelectorAll('input[type="datetime-local"]').forEach(function(el) {
+                flatpickr(el, {
+                    enableTime: true,
+                    dateFormat: 'Y-m-d H:i',
+                    altInput: true,
+                    altFormat: 'D, d M Y at h:i K',
+                    allowInput: false,
+                    time_24hr: false,
+                    minuteIncrement: 15,
+                });
+            });
+
+        });
+    </script>
     @stack('scripts')
 </body>
 
