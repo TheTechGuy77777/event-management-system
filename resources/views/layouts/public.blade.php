@@ -466,8 +466,11 @@
                             <li><a href="#"
                                     class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">Refund
                                     Policy</a></li>
-                            <li><a href="#"
-                                    class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">Support</a>
+                            <li>
+                                <a href="{{ route('contact') }}"
+                                    class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">
+                                    Contact Us
+                                </a>
                             </li>
                         </ul>
                     </div>

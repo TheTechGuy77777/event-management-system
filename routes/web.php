@@ -20,6 +20,10 @@ Route::get('/pricing', function () {
 Route::get('/about', function () {
     return view('public.about');
 })->name('about');
+Route::get('/contact', function () {
+    return view('public.contact');
+})->name('contact');
+
 
 // Event Manager Routes
 Route::middleware(['auth', 'verified', 'event_manager'])->prefix('dashboard')->name('dashboard.')->group(function () {
