@@ -17,6 +17,12 @@ class Event extends Model
         'slug',
         'description',
         'event_type',
+        'event_mode',
+        'platform',
+        'meeting_link',
+        'meeting_id',
+        'meeting_passcode',
+        'whatsapp_link',
         'country',
         'location',
         'is_virtual',
@@ -40,12 +46,12 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'is_virtual' => 'boolean',
-        'is_recurring' => 'boolean',
-        'start_date' => 'datetime',
-        'end_date' => 'datetime',
-        'published_at' => 'datetime',
-        'recurrence_end' => 'date',
+        'is_virtual'      => 'boolean',
+        'is_recurring'    => 'boolean',
+        'start_date'      => 'datetime',
+        'end_date'        => 'datetime',
+        'published_at'    => 'datetime',
+        'recurrence_end'  => 'date',
         'commission_rate' => 'decimal:2',
     ];
 
@@ -75,7 +81,7 @@ class Event extends Model
         return $this->hasMany(Order::class);
     }
 
-    // Helpers
+    // Status Helpers
     public function isPublished(): bool
     {
         return $this->status === 'published';
@@ -94,5 +100,52 @@ class Event extends Model
     public function isEnded(): bool
     {
         return $this->status === 'ended';
+    }
+
+    // Event Mode Helpers
+    public function isPhysical(): bool
+    {
+        return $this->event_mode === 'physical' || is_null($this->event_mode);
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->event_mode === 'online';
+    }
+
+    public function isHybrid(): bool
+    {
+        return $this->event_mode === 'hybrid';
+    }
+
+    public function hasOnlineComponent(): bool
+    {
+        return in_array($this->event_mode, ['online', 'hybrid']);
+    }
+
+    // Platform Label
+    public function getPlatformLabelAttribute(): string
+    {
+        return match ($this->platform) {
+            'zoom'            => 'Zoom Meeting',
+            'zoom_webinar'    => 'Zoom Webinar',
+            'google_meet'     => 'Google Meet',
+            'microsoft_teams' => 'Microsoft Teams',
+            'youtube_live'    => 'YouTube Live',
+            'custom'          => 'Custom Link',
+            default           => 'Online',
+        };
+    }
+
+    // Platform Icon
+    public function getPlatformIconAttribute(): string
+    {
+        return match ($this->platform) {
+            'zoom', 'zoom_webinar' => 'fa-solid fa-video',
+            'google_meet'          => 'fa-brands fa-google',
+            'microsoft_teams'      => 'fa-brands fa-microsoft',
+            'youtube_live'         => 'fa-brands fa-youtube',
+            default                => 'fa-solid fa-link',
+        };
     }
 }

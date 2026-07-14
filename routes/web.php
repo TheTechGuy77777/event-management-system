@@ -25,6 +25,19 @@ Route::get('/contact', function () {
 })->name('contact');
 
 
+// Paystack Webhook
+Route::post('/webhook/paystack', [App\Http\Controllers\WebhookController::class, 'paystack'])
+    ->name('webhook.paystack');
+
+
+// Rate limited routes
+Route::middleware('throttle:10,1')->group(function () {
+    Route::post('/events/{slug}/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
+    Route::post('/events/{slug}/waitlist', [App\Http\Controllers\WaitlistController::class, 'store'])->name('waitlist.store');
+    Route::post('/promo-codes/validate', [App\Http\Controllers\CheckoutController::class, 'validatePromo'])->name('promo.validate');
+});
+
+
 // Event Manager Routes
 Route::middleware(['auth', 'verified', 'event_manager'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [EventManagerDashboardController::class, 'index'])->name('index');

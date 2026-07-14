@@ -27,7 +27,9 @@ class EventController extends Controller
 
     public function create()
     {
-        $categories = Category::where('is_active', true)->get();
+        $categories = \Illuminate\Support\Facades\Cache::remember('active_categories', 3600, function () {
+            return \App\Models\Category::where('is_active', true)->get();
+        });
         return view('eventmanager.events.create', compact('categories'));
     }
 

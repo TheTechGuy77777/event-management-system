@@ -10,7 +10,17 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
+
+
     ->withMiddleware(function (Middleware $middleware) {
+        // Exclude Paystack webhook from CSRF verification
+        $middleware->validateCsrfTokens(except: [
+            'webhook/paystack',
+        ]);
+
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'event_manager' => \App\Http\Middleware\EventManagerMiddleware::class,

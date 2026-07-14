@@ -102,7 +102,7 @@
                                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all duration-200 resize-none">{{ old('description') }}</textarea>
                         </div>
 
-                        <!-- Event Type & Category -->
+                        <!-- Event Format & Category -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="text-gray-400 text-sm font-medium mb-2 block">
@@ -113,8 +113,7 @@
                                     <option value="">Select format</option>
                                     @foreach (['Party', 'Performance', 'Concert', 'Festival', 'Exhibition', 'Screening', 'Market', 'Pop Up', 'Conference', 'Class', 'Workshop', 'Presentation', 'Meetup', 'Attraction', 'Tournament', 'Networking'] as $type)
                                         <option value="{{ $type }}"
-                                            {{ old('event_type') == $type ? 'selected' : '' }}>{{ $type }}
-                                        </option>
+                                            {{ old('event_type') == $type ? 'selected' : '' }}>{{ $type }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -136,48 +135,162 @@
                             </div>
                         </div>
 
-                        <!-- Location -->
+                        <!-- Event Mode -->
                         <div>
-                            <label class="text-gray-400 text-sm font-medium mb-2 block">Location</label>
+                            <label class="text-gray-400 text-sm font-medium mb-3 block">
+                                Event Mode <span class="text-amber-400">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="event_mode" value="physical" x-model="eventMode"
+                                        {{ old('event_mode', 'physical') == 'physical' ? 'checked' : '' }}
+                                        class="hidden peer">
+                                    <div
+                                        class="glass rounded-xl p-4 border-2 border-transparent peer-checked:border-amber-400/50 peer-checked:bg-amber-400/5 transition-all duration-200 text-center">
+                                        <div
+                                            class="w-10 h-10 gold-gradient rounded-xl flex items-center justify-center mx-auto mb-2">
+                                            <i class="fa-solid fa-location-dot text-black text-sm"></i>
+                                        </div>
+                                        <p class="text-white text-sm font-semibold">Physical</p>
+                                        <p class="text-gray-500 text-xs mt-1">In-person venue event</p>
+                                    </div>
+                                </label>
 
-                            <!-- Virtual Toggle -->
-                            <div class="flex items-center gap-3 mb-4 p-4 glass rounded-xl cursor-pointer"
-                                x-on:click="isVirtual = !isVirtual">
-                                <div class="w-10 h-6 rounded-full transition-colors duration-300 relative cursor-pointer flex-shrink-0"
-                                    :class="isVirtual ? 'bg-amber-400' : 'bg-white/10'">
-                                    <div class="w-4 h-4 bg-white rounded-full absolute top-1 transition-transform duration-300"
-                                        :class="isVirtual ? 'translate-x-5' : 'translate-x-1'"></div>
-                                </div>
-                                <div>
-                                    <p class="text-white text-sm font-medium">This is a virtual event</p>
-                                    <p class="text-gray-500 text-xs">Online event via Zoom, Meet, Teams, etc.</p>
-                                </div>
-                                <input type="hidden" name="is_virtual" :value="isVirtual ? '1' : '0'">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="event_mode" value="online" x-model="eventMode"
+                                        {{ old('event_mode') == 'online' ? 'checked' : '' }} class="hidden peer">
+                                    <div
+                                        class="glass rounded-xl p-4 border-2 border-transparent peer-checked:border-amber-400/50 peer-checked:bg-amber-400/5 transition-all duration-200 text-center">
+                                        <div
+                                            class="w-10 h-10 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                            <i class="fa-solid fa-video text-blue-400 text-sm"></i>
+                                        </div>
+                                        <p class="text-white text-sm font-semibold">Online</p>
+                                        <p class="text-gray-500 text-xs mt-1">Virtual event only</p>
+                                    </div>
+                                </label>
+
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="event_mode" value="hybrid" x-model="eventMode"
+                                        {{ old('event_mode') == 'hybrid' ? 'checked' : '' }} class="hidden peer">
+                                    <div
+                                        class="glass rounded-xl p-4 border-2 border-transparent peer-checked:border-amber-400/50 peer-checked:bg-amber-400/5 transition-all duration-200 text-center">
+                                        <div
+                                            class="w-10 h-10 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center mx-auto mb-2">
+                                            <i class="fa-solid fa-layer-group text-purple-400 text-sm"></i>
+                                        </div>
+                                        <p class="text-white text-sm font-semibold">Hybrid</p>
+                                        <p class="text-gray-500 text-xs mt-1">Physical + Online</p>
+                                    </div>
+                                </label>
                             </div>
+                        </div>
 
-                            <div x-show="!isVirtual" x-transition class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <select name="country"
-                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-amber-400/50 transition-all duration-200 appearance-none cursor-pointer">
-                                        <option value="">Select country</option>
-                                        @foreach (['Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Rwanda', 'United Kingdom'] as $country)
-                                            <option value="{{ $country }}"
-                                                {{ old('country') == $country ? 'selected' : '' }}>{{ $country }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <input type="text" name="location" value="{{ old('location') }}"
-                                        placeholder="Venue name and address"
-                                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all duration-200">
-                                </div>
-                            </div>
-
-                            <div x-show="isVirtual" x-transition>
-                                <input type="text" name="virtual_link" value="{{ old('virtual_link') }}"
-                                    placeholder="https://zoom.us/j/your-meeting-link"
+                        <!-- Location — Physical & Hybrid -->
+                        <div x-show="eventMode === 'physical' || eventMode === 'hybrid'" x-transition>
+                            <label class="text-gray-400 text-sm font-medium mb-2 block">
+                                Venue Location <span x-show="eventMode === 'physical' || eventMode === 'hybrid'"
+                                    class="text-amber-400">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <select name="country"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-amber-400/50 transition-all duration-200 appearance-none cursor-pointer">
+                                    <option value="">Select country</option>
+                                    @foreach (['Nigeria', 'Ghana', 'Kenya', 'South Africa', 'Rwanda', 'United Kingdom'] as $country)
+                                        <option value="{{ $country }}"
+                                            {{ old('country') == $country ? 'selected' : '' }}>{{ $country }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="text" name="location" value="{{ old('location') }}"
+                                    placeholder="Venue name and address"
                                     class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all duration-200">
+                            </div>
+                        </div>
+
+                        <!-- Online Details — Online & Hybrid -->
+                        <div x-show="eventMode === 'online' || eventMode === 'hybrid'" x-transition class="space-y-4">
+                            <label class="text-gray-400 text-sm font-medium block">
+                                Online Event Details <span class="text-amber-400">*</span>
+                            </label>
+
+                            <!-- Platform -->
+                            <div>
+                                <label class="text-gray-500 text-xs mb-1 block">Platform <span
+                                        class="text-amber-400">*</span></label>
+                                <select name="platform"
+                                    class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-amber-400/50 transition-all appearance-none cursor-pointer">
+                                    <option value="">Select platform</option>
+                                    <option value="zoom" {{ old('platform') == 'zoom' ? 'selected' : '' }}>Zoom Meeting
+                                    </option>
+                                    <option value="zoom_webinar"
+                                        {{ old('platform') == 'zoom_webinar' ? 'selected' : '' }}>Zoom Webinar</option>
+                                    <option value="google_meet" {{ old('platform') == 'google_meet' ? 'selected' : '' }}>
+                                        Google Meet</option>
+                                    <option value="microsoft_teams"
+                                        {{ old('platform') == 'microsoft_teams' ? 'selected' : '' }}>Microsoft Teams
+                                    </option>
+                                    <option value="youtube_live"
+                                        {{ old('platform') == 'youtube_live' ? 'selected' : '' }}>YouTube Live</option>
+                                    <option value="custom" {{ old('platform') == 'custom' ? 'selected' : '' }}>Custom Link
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Meeting Link -->
+                            <div>
+                                <label class="text-gray-500 text-xs mb-1 block">Meeting Link <span
+                                        class="text-amber-400">*</span></label>
+                                <div class="relative">
+                                    <i
+                                        class="fa-solid fa-link absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                                    <input type="url" name="meeting_link" value="{{ old('meeting_link') }}"
+                                        placeholder="https://zoom.us/j/123456789"
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Meeting ID & Passcode -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-gray-500 text-xs mb-1 block">Meeting ID <span
+                                            class="text-gray-600">(optional)</span></label>
+                                    <div class="relative">
+                                        <i
+                                            class="fa-solid fa-hashtag absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                                        <input type="text" name="meeting_id" value="{{ old('meeting_id') }}"
+                                            placeholder="123 456 789"
+                                            class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-gray-500 text-xs mb-1 block">Passcode <span
+                                            class="text-gray-600">(optional)</span></label>
+                                    <div class="relative">
+                                        <i
+                                            class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                                        <input type="text" name="meeting_passcode"
+                                            value="{{ old('meeting_passcode') }}" placeholder="••••••"
+                                            class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- WhatsApp Link -->
+                            <div>
+                                <label class="text-gray-500 text-xs mb-1 block">
+                                    WhatsApp Group/Community Link <span class="text-amber-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <i
+                                        class="fa-brands fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-green-400 text-sm"></i>
+                                    <input type="url" name="whatsapp_link" value="{{ old('whatsapp_link') }}"
+                                        placeholder="https://chat.whatsapp.com/..."
+                                        class="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                                </div>
+                                <p class="text-gray-600 text-xs mt-1">
+                                    Attendees will receive this link after successful ticket purchase.
+                                </p>
                             </div>
                         </div>
 
@@ -303,8 +416,7 @@
                                             </button>
                                         </div>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                            <input type="text" :name="'lineup[' + index + '][name]'"
-                                                placeholder="Name"
+                                            <input type="text" :name="'lineup[' + index + '][name]'" placeholder="Name"
                                                 class="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
                                             <input type="text" :name="'lineup[' + index + '][role]'"
                                                 placeholder="Role / Title"
@@ -641,6 +753,7 @@
                 isDragging: false,
                 imagePreview: null,
                 errorMessage: '',
+                eventMode: '{{ old('event_mode', 'physical') }}',
                 lineup: [],
                 tickets: [{
                     type: 'paid',
@@ -656,6 +769,7 @@
                         const categoryId = document.querySelector('[name="category_id"]')?.value;
                         const startDate = document.querySelector('[name="start_date"]')?.value;
                         const endDate = document.querySelector('[name="end_date"]')?.value;
+                        const paymentModel = document.querySelector('input[name="payment_model"]:checked');
 
                         if (!name) {
                             this.showError('Event name is required.');
@@ -685,6 +799,39 @@
                             this.showError('End date must be after start date.');
                             return;
                         }
+                        if (!paymentModel) {
+                            this.showError('Please select a commission model.');
+                            return;
+                        }
+
+                        // Validate online/hybrid fields
+                        if (this.eventMode === 'online' || this.eventMode === 'hybrid') {
+                            const platform = document.querySelector('[name="platform"]')?.value;
+                            const meetingLink = document.querySelector('[name="meeting_link"]')?.value.trim();
+                            const whatsappLink = document.querySelector('[name="whatsapp_link"]')?.value.trim();
+
+                            if (!platform) {
+                                this.showError('Please select a platform for your online event.');
+                                return;
+                            }
+                            if (!meetingLink) {
+                                this.showError('Meeting link is required for online events.');
+                                return;
+                            }
+                            if (!whatsappLink) {
+                                this.showError('WhatsApp group link is required for online events.');
+                                return;
+                            }
+                        }
+
+                        // Validate physical/hybrid venue
+                        if (this.eventMode === 'physical' || this.eventMode === 'hybrid') {
+                            const location = document.querySelector('[name="location"]')?.value.trim();
+                            if (!location) {
+                                this.showError('Venue location is required for physical events.');
+                                return;
+                            }
+                        }
                     }
 
                     this.errorMessage = '';
@@ -694,7 +841,6 @@
                         behavior: 'smooth'
                     });
                 },
-
 
                 prevStep() {
                     if (this.currentStep > 1) this.currentStep--;
