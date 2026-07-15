@@ -14,7 +14,7 @@ class HomeController extends Controller
             ->where('status', 'published');
 
         if (request('search')) {
-            $query->where('name', 'like', '%' . request('search') . '%');
+            $query->where('name', 'like', '%'.request('search').'%');
         }
 
         if (request('country')) {

@@ -28,12 +28,12 @@ class PromoCodeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'event_id'       => ['required', 'exists:events,id'],
-            'code'           => ['nullable', 'string', 'max:20', 'unique:promo_codes'],
-            'discount_type'  => ['required', 'in:percentage,fixed'],
+            'event_id' => ['required', 'exists:events,id'],
+            'code' => ['nullable', 'string', 'max:20', 'unique:promo_codes'],
+            'discount_type' => ['required', 'in:percentage,fixed'],
             'discount_value' => ['required', 'numeric', 'min:1'],
-            'usage_limit'    => ['nullable', 'integer', 'min:1'],
-            'expires_at'     => ['nullable', 'date', 'after:today'],
+            'usage_limit' => ['nullable', 'integer', 'min:1'],
+            'expires_at' => ['nullable', 'date', 'after:today'],
         ]);
 
         // Verify event ownership
@@ -47,15 +47,15 @@ class PromoCodeController extends Controller
         }
 
         PromoCode::create([
-            'event_id'       => $event->id,
-            'user_id'        => Auth::id(),
-            'code'           => strtoupper($request->code ?: Str::random(8)),
-            'discount_type'  => $request->discount_type,
+            'event_id' => $event->id,
+            'user_id' => Auth::id(),
+            'code' => strtoupper($request->code ?: Str::random(8)),
+            'discount_type' => $request->discount_type,
             'discount_value' => $request->discount_value,
-            'usage_limit'    => $request->usage_limit,
-            'usage_count'    => 0,
-            'expires_at'     => $request->expires_at,
-            'is_active'      => true,
+            'usage_limit' => $request->usage_limit,
+            'usage_count' => 0,
+            'expires_at' => $request->expires_at,
+            'is_active' => true,
         ]);
 
         return back()->with('success', 'Promo code created successfully!');
@@ -63,16 +63,20 @@ class PromoCodeController extends Controller
 
     public function toggle(PromoCode $promoCode)
     {
-        if ($promoCode->user_id !== Auth::id()) abort(403);
+        if ($promoCode->user_id !== Auth::id()) {
+            abort(403);
+        }
 
-        $promoCode->update(['is_active' => !$promoCode->is_active]);
+        $promoCode->update(['is_active' => ! $promoCode->is_active]);
 
-        return back()->with('success', 'Promo code ' . ($promoCode->is_active ? 'deactivated' : 'activated') . '.');
+        return back()->with('success', 'Promo code '.($promoCode->is_active ? 'deactivated' : 'activated').'.');
     }
 
     public function destroy(PromoCode $promoCode)
     {
-        if ($promoCode->user_id !== Auth::id()) abort(403);
+        if ($promoCode->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         $promoCode->delete();
 

@@ -27,9 +27,9 @@ class SendAnnouncementJob implements ShouldQueue
         // Create in-app notification
         Notification::create([
             'user_id' => $this->manager->id,
-            'title'   => $this->subject,
+            'title' => $this->subject,
             'message' => $this->message,
-            'type'    => 'info',
+            'type' => 'info',
         ]);
 
         // Send email

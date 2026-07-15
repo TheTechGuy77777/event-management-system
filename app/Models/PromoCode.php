@@ -22,7 +22,7 @@ class PromoCode extends Model
     ];
 
     protected $casts = [
-        'is_active'  => 'boolean',
+        'is_active' => 'boolean',
         'expires_at' => 'datetime',
     ];
 
@@ -38,9 +38,16 @@ class PromoCode extends Model
 
     public function isValid(): bool
     {
-        if (!$this->is_active) return false;
-        if ($this->expires_at && $this->expires_at->isPast()) return false;
-        if ($this->usage_limit && $this->usage_count >= $this->usage_limit) return false;
+        if (! $this->is_active) {
+            return false;
+        }
+        if ($this->expires_at && $this->expires_at->isPast()) {
+            return false;
+        }
+        if ($this->usage_limit && $this->usage_count >= $this->usage_limit) {
+            return false;
+        }
+
         return true;
     }
 
@@ -49,6 +56,7 @@ class PromoCode extends Model
         if ($this->discount_type === 'percentage') {
             return round($amount * ($this->discount_value / 100), 2);
         }
+
         return min($this->discount_value, $amount);
     }
 }

@@ -35,8 +35,8 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subject'      => ['required', 'string', 'max:255'],
-            'message'      => ['required', 'string', 'max:1000'],
+            'subject' => ['required', 'string', 'max:255'],
+            'message' => ['required', 'string', 'max:1000'],
             'recipient_id' => ['nullable', 'exists:users,id'],
         ]);
 
@@ -68,14 +68,14 @@ class AnnouncementController extends Controller
 
         // Save announcement history
         Announcement::create([
-            'sent_by'          => Auth::id(),
-            'subject'          => $subject,
-            'message'          => $message,
-            'recipient_type'   => $recipientType,
-            'recipient_name'   => $recipientName,
+            'sent_by' => Auth::id(),
+            'subject' => $subject,
+            'message' => $message,
+            'recipient_type' => $recipientType,
+            'recipient_name' => $recipientName,
             'recipients_count' => $managers->count(),
         ]);
 
-        return back()->with('success', 'Announcement sent to ' . $managers->count() . ' manager(s) successfully!');
+        return back()->with('success', 'Announcement sent to '.$managers->count().' manager(s) successfully!');
     }
 }

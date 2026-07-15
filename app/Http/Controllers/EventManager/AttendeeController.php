@@ -23,8 +23,8 @@ class AttendeeController extends Controller
             ->with(['order', 'ticket'])
             ->when(request('search'), function ($q) {
                 $q->where(function ($query) {
-                    $query->where('attendee_name', 'like', '%' . request('search') . '%')
-                        ->orWhere('attendee_email', 'like', '%' . request('search') . '%');
+                    $query->where('attendee_name', 'like', '%'.request('search').'%')
+                        ->orWhere('attendee_email', 'like', '%'.request('search').'%');
                 });
             })
             ->latest()
@@ -61,11 +61,11 @@ class AttendeeController extends Controller
             ->with(['order', 'ticket'])
             ->get();
 
-        $filename = 'attendees-' . $event->slug . '.csv';
+        $filename = 'attendees-'.$event->slug.'.csv';
 
         $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ];
 
         $callback = function () use ($attendees) {

@@ -13,6 +13,7 @@ class AnnouncementMail extends Mailable
     use Queueable, SerializesModels;
 
     public string $announcementSubject;
+
     public string $announcementMessage;
 
     public function __construct(string $subject, string $message)
@@ -24,7 +25,7 @@ class AnnouncementMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[EventPlug] ' . $this->announcementSubject,
+            subject: '[EventPlug] '.$this->announcementSubject,
         );
     }
 

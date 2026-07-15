@@ -33,14 +33,16 @@ class AuthenticatedSessionController extends Controller
         // Block banned users
         if ($user->is_banned) {
             Auth::guard('web')->logout();
+
             return redirect()->route('login')->withErrors([
                 'email' => 'Your account has been permanently disabled. Contact support if you believe this is an error.',
             ]);
         }
 
         // Block suspended users
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             Auth::guard('web')->logout();
+
             return redirect()->route('login')->withErrors([
                 'email' => 'Your account has been suspended. Please contact support for assistance.',
             ]);

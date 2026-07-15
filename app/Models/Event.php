@@ -46,12 +46,12 @@ class Event extends Model
     ];
 
     protected $casts = [
-        'is_virtual'      => 'boolean',
-        'is_recurring'    => 'boolean',
-        'start_date'      => 'datetime',
-        'end_date'        => 'datetime',
-        'published_at'    => 'datetime',
-        'recurrence_end'  => 'date',
+        'is_virtual' => 'boolean',
+        'is_recurring' => 'boolean',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'published_at' => 'datetime',
+        'recurrence_end' => 'date',
         'commission_rate' => 'decimal:2',
     ];
 
@@ -127,13 +127,13 @@ class Event extends Model
     public function getPlatformLabelAttribute(): string
     {
         return match ($this->platform) {
-            'zoom'            => 'Zoom Meeting',
-            'zoom_webinar'    => 'Zoom Webinar',
-            'google_meet'     => 'Google Meet',
+            'zoom' => 'Zoom Meeting',
+            'zoom_webinar' => 'Zoom Webinar',
+            'google_meet' => 'Google Meet',
             'microsoft_teams' => 'Microsoft Teams',
-            'youtube_live'    => 'YouTube Live',
-            'custom'          => 'Custom Link',
-            default           => 'Online',
+            'youtube_live' => 'YouTube Live',
+            'custom' => 'Custom Link',
+            default => 'Online',
         };
     }
 
@@ -142,10 +142,10 @@ class Event extends Model
     {
         return match ($this->platform) {
             'zoom', 'zoom_webinar' => 'fa-solid fa-video',
-            'google_meet'          => 'fa-brands fa-google',
-            'microsoft_teams'      => 'fa-brands fa-microsoft',
-            'youtube_live'         => 'fa-brands fa-youtube',
-            default                => 'fa-solid fa-link',
+            'google_meet' => 'fa-brands fa-google',
+            'microsoft_teams' => 'fa-brands fa-microsoft',
+            'youtube_live' => 'fa-brands fa-youtube',
+            default => 'fa-solid fa-link',
         };
     }
 }

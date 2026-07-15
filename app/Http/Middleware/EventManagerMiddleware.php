@@ -13,19 +13,21 @@ class EventManagerMiddleware
     {
         $user = Auth::user();
 
-        if (!$user || !$user->isEventManager()) {
+        if (! $user || ! $user->isEventManager()) {
             abort(403, 'Unauthorized');
         }
 
         if ($user->is_banned) {
             Auth::logout();
+
             return redirect()->route('login')->withErrors([
                 'email' => 'Your account has been permanently disabled.',
             ]);
         }
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             Auth::logout();
+
             return redirect()->route('login')->withErrors([
                 'email' => 'Your account has been suspended. Please contact support.',
             ]);

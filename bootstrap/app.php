@@ -1,16 +1,18 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\EventManagerMiddleware;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-
 
     ->withMiddleware(function (Middleware $middleware) {
         // Exclude Paystack webhook from CSRF verification
@@ -18,12 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'webhook/paystack',
         ]);
 
-        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
-
+        $middleware->append(SecurityHeaders::class);
 
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'event_manager' => \App\Http\Middleware\EventManagerMiddleware::class,
+            'admin' => AdminMiddleware::class,
+            'event_manager' => EventManagerMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

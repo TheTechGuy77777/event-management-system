@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Prevent lazy loading in development
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
     }
 }

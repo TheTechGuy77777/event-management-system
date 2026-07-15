@@ -13,7 +13,7 @@ class AdminMiddleware
     {
         $user = Auth::user();
 
-        if (!$user || !$user->isAdmin()) {
+        if (! $user || ! $user->isAdmin()) {
             abort(403, 'Unauthorized');
         }
 

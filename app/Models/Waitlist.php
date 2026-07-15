@@ -19,7 +19,7 @@ class Waitlist extends Model
     ];
 
     protected $casts = [
-        'is_notified'         => 'boolean',
+        'is_notified' => 'boolean',
         'priority_expires_at' => 'datetime',
     ];
 

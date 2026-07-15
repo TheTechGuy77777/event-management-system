@@ -66,9 +66,9 @@ class CheckInController extends Controller
             ->first();
 
         // Invalid ticket
-        if (!$orderItem) {
+        if (! $orderItem) {
             return response()->json([
-                'status'  => 'invalid',
+                'status' => 'invalid',
                 'message' => 'This ticket code is not valid for this event.',
             ]);
         }
@@ -76,26 +76,26 @@ class CheckInController extends Controller
         // Already checked in
         if ($orderItem->is_checked_in) {
             return response()->json([
-                'status'        => 'already_used',
-                'message'       => 'This ticket has already been checked in.',
+                'status' => 'already_used',
+                'message' => 'This ticket has already been checked in.',
                 'attendee_name' => $orderItem->attendee_name,
-                'ticket_type'   => $orderItem->ticket->name ?? '—',
+                'ticket_type' => $orderItem->ticket->name ?? '—',
                 'checked_in_at' => $orderItem->checked_in_at?->format('h:i A'),
             ]);
         }
 
         // Valid — check in
         $orderItem->update([
-            'is_checked_in'  => true,
-            'checked_in_at'  => now(),
+            'is_checked_in' => true,
+            'checked_in_at' => now(),
         ]);
 
         return response()->json([
-            'status'        => 'success',
-            'message'       => 'Check-in successful!',
+            'status' => 'success',
+            'message' => 'Check-in successful!',
             'attendee_name' => $orderItem->attendee_name,
-            'ticket_type'   => $orderItem->ticket->name ?? '—',
-            'ticket_code'   => $orderItem->ticket_code,
+            'ticket_type' => $orderItem->ticket->name ?? '—',
+            'ticket_code' => $orderItem->ticket_code,
         ]);
     }
 }

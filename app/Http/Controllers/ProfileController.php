@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -22,14 +20,14 @@ class ProfileController extends Controller
         // Password change
         if ($request->change_password) {
             $request->validate([
-                'current_password'  => ['required', 'current_password'],
-                'password'          => [
+                'current_password' => ['required', 'current_password'],
+                'password' => [
                     'required',
                     'confirmed',
                     'min:8',
                     'regex:/[A-Z]/',
                     'regex:/[0-9]/',
-                    'regex:/[@$!%*#?&]/'
+                    'regex:/[@$!%*#?&]/',
                 ],
             ]);
 
@@ -42,17 +40,17 @@ class ProfileController extends Controller
 
         // Profile update
         $request->validate([
-            'name'              => ['required', 'string', 'max:255'],
-            'phone'             => ['required', 'string', 'max:20'],
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
             'organization_name' => ['nullable', 'string', 'max:255'],
-            'profile_photo'     => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
 
         $user = $request->user();
 
         $data = [
-            'name'              => $request->name,
-            'phone'             => $request->phone,
+            'name' => $request->name,
+            'phone' => $request->phone,
             'organization_name' => $request->organization_name,
         ];
 
@@ -74,6 +72,7 @@ class ProfileController extends Controller
         $user->delete();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/')->with('success', 'Account deleted successfully.');
     }
 }

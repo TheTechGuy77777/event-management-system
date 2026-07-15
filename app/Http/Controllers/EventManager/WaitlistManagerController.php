@@ -13,7 +13,9 @@ class WaitlistManagerController extends Controller
 {
     public function index(Event $event)
     {
-        if ($event->user_id !== Auth::id()) abort(403);
+        if ($event->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         $waitlists = Waitlist::where('event_id', $event->id)
             ->with('ticket')
@@ -25,11 +27,13 @@ class WaitlistManagerController extends Controller
 
     public function notify(Event $event, Waitlist $waitlist)
     {
-        if ($event->user_id !== Auth::id()) abort(403);
+        if ($event->user_id !== Auth::id()) {
+            abort(403);
+        }
 
         // Set 30-minute priority window
         $waitlist->update([
-            'is_notified'         => true,
+            'is_notified' => true,
             'priority_expires_at' => now()->addMinutes(30),
         ]);
 
@@ -38,6 +42,6 @@ class WaitlistManagerController extends Controller
             new WaitlistNotificationMail($waitlist, $event, $waitlist->ticket)
         );
 
-        return back()->with('success', $waitlist->name . ' has been notified with a 30-minute priority window!');
+        return back()->with('success', $waitlist->name.' has been notified with a 30-minute priority window!');
     }
 }

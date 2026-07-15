@@ -18,7 +18,7 @@ return new class extends Migration
                 'google_meet',
                 'microsoft_teams',
                 'youtube_live',
-                'custom'
+                'custom',
             ])->nullable()->after('event_mode');
             $table->string('meeting_link')->nullable()->after('platform');
             $table->string('meeting_id')->nullable()->after('meeting_link');

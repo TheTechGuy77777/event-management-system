@@ -13,7 +13,7 @@ class PublicEventController extends Controller
             'tickets.perks',
             'lineup',
             'user',
-            'orders'
+            'orders',
         ])
             ->where('slug', $slug)
             ->where('status', 'published')

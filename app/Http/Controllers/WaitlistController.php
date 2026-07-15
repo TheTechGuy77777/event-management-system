@@ -6,7 +6,6 @@ use App\Models\Event;
 use App\Models\Ticket;
 use App\Models\Waitlist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class WaitlistController extends Controller
 {
@@ -18,8 +17,8 @@ class WaitlistController extends Controller
 
         $request->validate([
             'ticket_id' => ['required', 'exists:tickets,id'],
-            'name'      => ['required', 'string', 'max:255'],
-            'email'     => ['required', 'email'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email'],
         ]);
 
         $ticket = Ticket::findOrFail($request->ticket_id);
@@ -35,9 +34,9 @@ class WaitlistController extends Controller
 
         Waitlist::create([
             'ticket_id' => $ticket->id,
-            'event_id'  => $event->id,
-            'name'      => $request->name,
-            'email'     => $request->email,
+            'event_id' => $event->id,
+            'name' => $request->name,
+            'email' => $request->email,
         ]);
 
         return back()->with('success', 'You have been added to the waitlist! We will notify you if a ticket becomes available.');

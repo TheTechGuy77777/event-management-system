@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -37,15 +38,15 @@ class TransactionController extends Controller
         // Search by reference or buyer
         if ($request->search) {
             $query->where(function ($q) use ($request) {
-                $q->where('payment_reference', 'like', '%' . $request->search . '%')
-                    ->orWhere('buyer_name', 'like', '%' . $request->search . '%')
-                    ->orWhere('buyer_email', 'like', '%' . $request->search . '%');
+                $q->where('payment_reference', 'like', '%'.$request->search.'%')
+                    ->orWhere('buyer_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('buyer_email', 'like', '%'.$request->search.'%');
             });
         }
 
         $transactions = $query->latest()->paginate(15)->withQueryString();
 
-        $totalRevenue    = $query->sum('total_amount');
+        $totalRevenue = $query->sum('total_amount');
         $totalCommission = $query->sum('platform_commission');
 
         // For export
@@ -54,7 +55,7 @@ class TransactionController extends Controller
         }
 
         // Get managers for filter dropdown
-        $managers = \App\Models\User::where('role', 'event_manager')
+        $managers = User::where('role', 'event_manager')
             ->orderBy('name')
             ->get();
 
@@ -68,11 +69,11 @@ class TransactionController extends Controller
 
     private function exportCsv($transactions)
     {
-        $filename = 'transactions-' . now()->format('Y-m-d') . '.csv';
+        $filename = 'transactions-'.now()->format('Y-m-d').'.csv';
 
         $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ];
 
         $callback = function () use ($transactions) {

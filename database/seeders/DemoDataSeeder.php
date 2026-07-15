@@ -4,11 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Ticket;
 use App\Models\User;
-use App\Models\Notification;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -20,21 +20,21 @@ class DemoDataSeeder extends Seeder
         // ===== CREATE EVENT MANAGERS =====
         $managers = [
             [
-                'name'              => 'Chibuzo Okonkwo',
-                'email'             => 'chibuzo@eventplug.com',
-                'phone'             => '+2348012345678',
+                'name' => 'Chibuzo Okonkwo',
+                'email' => 'chibuzo@eventplug.com',
+                'phone' => '+2348012345678',
                 'organization_name' => 'Plug Entertainment',
             ],
             [
-                'name'              => 'Amara Nwosu',
-                'email'             => 'amara@eventplug.com',
-                'phone'             => '+2348098765432',
+                'name' => 'Amara Nwosu',
+                'email' => 'amara@eventplug.com',
+                'phone' => '+2348098765432',
                 'organization_name' => 'Amara Events Co.',
             ],
             [
-                'name'              => 'Tunde Bakare',
-                'email'             => 'tunde@eventplug.com',
-                'phone'             => '+2348055544433',
+                'name' => 'Tunde Bakare',
+                'email' => 'tunde@eventplug.com',
+                'phone' => '+2348055544433',
                 'organization_name' => 'Lagos Vibes',
             ],
         ];
@@ -44,13 +44,13 @@ class DemoDataSeeder extends Seeder
             $createdManagers[] = User::updateOrCreate(
                 ['email' => $manager['email']],
                 [
-                    'name'              => $manager['name'],
-                    'password'          => Hash::make('Password@123'),
-                    'role'              => 'event_manager',
-                    'phone'             => $manager['phone'],
+                    'name' => $manager['name'],
+                    'password' => Hash::make('Password@123'),
+                    'role' => 'event_manager',
+                    'phone' => $manager['phone'],
                     'organization_name' => $manager['organization_name'],
-                    'is_active'         => true,
-                    'is_banned'         => false,
+                    'is_active' => true,
+                    'is_banned' => false,
                     'email_verified_at' => now(),
                 ]
             );
@@ -236,7 +236,7 @@ class DemoDataSeeder extends Seeder
 
         $createdEvents = [];
         foreach ($eventsData as $eventData) {
-            $manager  = $createdManagers[$eventData['manager_index']];
+            $manager = $createdManagers[$eventData['manager_index']];
             $category = $categories->where('name', $eventData['category'])->first()
                 ?? $categories->first();
 
@@ -244,30 +244,30 @@ class DemoDataSeeder extends Seeder
             $originalSlug = $slug;
             $count = 1;
             while (Event::where('slug', $slug)->exists()) {
-                $slug = $originalSlug . '-' . $count++;
+                $slug = $originalSlug.'-'.$count++;
             }
 
             $event = Event::updateOrCreate(
                 ['slug' => $slug],
                 [
-                    'user_id'          => $manager->id,
-                    'category_id'      => $category->id,
-                    'name'             => $eventData['name'],
-                    'image'            => $eventData['image'],
-                    'slug'             => $slug,
-                    'description'      => $eventData['description'],
-                    'event_type'       => $eventData['event_type'],
-                    'location'         => $eventData['location'],
-                    'country'          => $eventData['country'],
-                    'start_date'       => $eventData['start_date'],
-                    'end_date'         => $eventData['end_date'],
-                    'timezone'         => 'Africa/Lagos',
-                    'status'           => $eventData['status'],
-                    'published_at'     => $eventData['status'] === 'published' ? now() : null,
-                    'payment_model'    => $eventData['payment_model'],
-                    'commission_rate'  => 5,
-                    'is_virtual'       => false,
-                    'is_recurring'     => false,
+                    'user_id' => $manager->id,
+                    'category_id' => $category->id,
+                    'name' => $eventData['name'],
+                    'image' => $eventData['image'],
+                    'slug' => $slug,
+                    'description' => $eventData['description'],
+                    'event_type' => $eventData['event_type'],
+                    'location' => $eventData['location'],
+                    'country' => $eventData['country'],
+                    'start_date' => $eventData['start_date'],
+                    'end_date' => $eventData['end_date'],
+                    'timezone' => 'Africa/Lagos',
+                    'status' => $eventData['status'],
+                    'published_at' => $eventData['status'] === 'published' ? now() : null,
+                    'payment_model' => $eventData['payment_model'],
+                    'commission_rate' => 5,
+                    'is_virtual' => false,
+                    'is_recurring' => false,
                 ]
             );
 
@@ -276,14 +276,14 @@ class DemoDataSeeder extends Seeder
                 Ticket::updateOrCreate(
                     ['event_id' => $event->id, 'name' => $ticketData['name']],
                     [
-                        'ticket_type'    => $ticketData['ticket_type'] ?? 'paid',
+                        'ticket_type' => $ticketData['ticket_type'] ?? 'paid',
                         'admission_type' => $ticketData['admission_type'] ?? 'single',
-                        'group_size'     => $ticketData['group_size'] ?? null,
-                        'price'          => $ticketData['price'],
-                        'quantity'       => $ticketData['quantity'],
-                        'quantity_sold'  => 0,
+                        'group_size' => $ticketData['group_size'] ?? null,
+                        'price' => $ticketData['price'],
+                        'quantity' => $ticketData['quantity'],
+                        'quantity_sold' => 0,
                         'purchase_limit' => 5,
-                        'is_active'      => true,
+                        'is_active' => true,
                     ]
                 );
             }
@@ -305,56 +305,60 @@ class DemoDataSeeder extends Seeder
 
         // Create orders for published events
         foreach ($createdEvents as $event) {
-            if ($event->status !== 'published') continue;
+            if ($event->status !== 'published') {
+                continue;
+            }
 
             $tickets = $event->tickets()->where('ticket_type', '!=', 'free')->get();
-            if ($tickets->isEmpty()) continue;
+            if ($tickets->isEmpty()) {
+                continue;
+            }
 
             // Create 5-10 orders per event
             $orderCount = rand(5, 10);
             for ($i = 0; $i < $orderCount; $i++) {
-                $buyer  = $buyers[array_rand($buyers)];
+                $buyer = $buyers[array_rand($buyers)];
                 $ticket = $tickets->random();
-                $qty    = rand(1, 2);
+                $qty = rand(1, 2);
 
-                $unitPrice   = $ticket->price;
-                $subtotal    = $unitPrice * $qty;
-                $commission  = $subtotal * 0.05;
+                $unitPrice = $ticket->price;
+                $subtotal = $unitPrice * $qty;
+                $commission = $subtotal * 0.05;
                 $totalAmount = $event->payment_model === 'attendee_pays'
                     ? $subtotal + $commission
                     : $subtotal;
                 $managerEarnings = $subtotal - ($event->payment_model === 'manager_pays' ? $commission : 0);
 
                 $order = Order::create([
-                    'event_id'            => $event->id,
-                    'buyer_name'          => $buyer['name'],
-                    'buyer_email'         => $buyer['email'],
-                    'buyer_phone'         => $buyer['phone'],
-                    'total_amount'        => $totalAmount,
+                    'event_id' => $event->id,
+                    'buyer_name' => $buyer['name'],
+                    'buyer_email' => $buyer['email'],
+                    'buyer_phone' => $buyer['phone'],
+                    'total_amount' => $totalAmount,
                     'platform_commission' => $commission,
-                    'manager_earnings'    => $managerEarnings,
-                    'payment_reference'   => 'EVT-' . strtoupper(Str::random(12)),
-                    'payment_gateway'     => rand(0, 1) ? 'paystack' : 'monnify',
-                    'payment_status'      => 'completed',
-                    'created_at'          => now()->subDays(rand(1, 30)),
-                    'updated_at'          => now()->subDays(rand(1, 30)),
+                    'manager_earnings' => $managerEarnings,
+                    'payment_reference' => 'EVT-'.strtoupper(Str::random(12)),
+                    'payment_gateway' => rand(0, 1) ? 'paystack' : 'monnify',
+                    'payment_status' => 'completed',
+                    'created_at' => now()->subDays(rand(1, 30)),
+                    'updated_at' => now()->subDays(rand(1, 30)),
                 ]);
 
                 // Create order items
                 for ($j = 0; $j < $qty; $j++) {
-                    $ticketCode = 'EVT-' . strtoupper(Str::random(6));
+                    $ticketCode = 'EVT-'.strtoupper(Str::random(6));
 
                     OrderItem::create([
-                        'order_id'       => $order->id,
-                        'ticket_id'      => $ticket->id,
-                        'attendee_name'  => $buyer['name'],
+                        'order_id' => $order->id,
+                        'ticket_id' => $ticket->id,
+                        'attendee_name' => $buyer['name'],
                         'attendee_email' => $buyer['email'],
-                        'ticket_code'    => $ticketCode,
-                        'unit_price'     => $unitPrice,
-                        'is_checked_in'  => rand(0, 1),
-                        'checked_in_at'  => rand(0, 1) ? now()->subHours(rand(1, 5)) : null,
-                        'created_at'     => $order->created_at,
-                        'updated_at'     => $order->updated_at,
+                        'ticket_code' => $ticketCode,
+                        'unit_price' => $unitPrice,
+                        'is_checked_in' => rand(0, 1),
+                        'checked_in_at' => rand(0, 1) ? now()->subHours(rand(1, 5)) : null,
+                        'created_at' => $order->created_at,
+                        'updated_at' => $order->updated_at,
                     ]);
                 }
 
@@ -364,10 +368,10 @@ class DemoDataSeeder extends Seeder
 
             // Create notifications for event manager
             Notification::create([
-                'user_id'    => $event->user_id,
-                'title'      => 'Tickets selling fast! 🔥',
-                'message'    => $event->name . ' has sold ' . $event->tickets->sum('quantity_sold') . ' tickets so far.',
-                'type'       => 'success',
+                'user_id' => $event->user_id,
+                'title' => 'Tickets selling fast! 🔥',
+                'message' => $event->name.' has sold '.$event->tickets->sum('quantity_sold').' tickets so far.',
+                'type' => 'success',
                 'created_at' => now()->subDays(rand(1, 5)),
                 'updated_at' => now()->subDays(rand(1, 5)),
             ]);
@@ -376,7 +380,7 @@ class DemoDataSeeder extends Seeder
         $this->command->info('✅ Demo data seeded successfully!');
         $this->command->info('Event Managers created:');
         foreach ($createdManagers as $manager) {
-            $this->command->info('  - ' . $manager->email . ' / Password@123');
+            $this->command->info('  - '.$manager->email.' / Password@123');
         }
     }
 }

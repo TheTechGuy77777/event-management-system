@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Models\Order;
 use App\Models\Event;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -22,7 +22,7 @@ class TicketConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Tickets for ' . $this->event->name . ' 🎉',
+            subject: 'Your Tickets for '.$this->event->name.' 🎉',
         );
     }
 
