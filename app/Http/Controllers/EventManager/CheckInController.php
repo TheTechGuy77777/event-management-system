@@ -5,32 +5,25 @@ namespace App\Http\Controllers\EventManager;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\OrderItem;
+use App\Policies\EventPolicy;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CheckInController extends Controller
 {
     public function index(Event $event)
     {
-        if ($event->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize(EventPolicy::class.'.manageAttendees', $event);
 
-        $totalAttendees = OrderItem::whereHas('order', function ($q) use ($event) {
-            $q->where('event_id', $event->id)
-                ->where('payment_status', 'completed');
-        })->count();
+        $stats = Cache::remember("checkin_stats_{$event->id}", 60, function () use ($event) {
+            return [
+                'totalAttendees' => OrderItem::completedForEvent($event->id)->count(),
+                'totalCheckedIn' => OrderItem::completedForEvent($event->id)->checkedIn()->count(),
+            ];
+        });
 
-        $totalCheckedIn = OrderItem::whereHas('order', function ($q) use ($event) {
-            $q->where('event_id', $event->id)
-                ->where('payment_status', 'completed');
-        })->where('is_checked_in', true)->count();
-
-        $recentCheckIns = OrderItem::whereHas('order', function ($q) use ($event) {
-            $q->where('event_id', $event->id)
-                ->where('payment_status', 'completed');
-        })
-            ->where('is_checked_in', true)
+        $recentCheckIns = OrderItem::completedForEvent($event->id)
+            ->checkedIn()
             ->with('ticket')
             ->latest('checked_in_at')
             ->take(10)
@@ -38,17 +31,14 @@ class CheckInController extends Controller
 
         return view('eventmanager.events.checkin', compact(
             'event',
-            'totalAttendees',
-            'totalCheckedIn',
+            'stats',
             'recentCheckIns'
         ));
     }
 
     public function scan(Request $request, Event $event)
     {
-        if ($event->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->authorize(EventPolicy::class.'.manageAttendees', $event);
 
         $request->validate([
             'ticket_code' => ['required', 'string'],
@@ -56,16 +46,11 @@ class CheckInController extends Controller
 
         $code = strtoupper(trim($request->ticket_code));
 
-        // Find the ticket
         $orderItem = OrderItem::where('ticket_code', $code)
-            ->whereHas('order', function ($q) use ($event) {
-                $q->where('event_id', $event->id)
-                    ->where('payment_status', 'completed');
-            })
+            ->completedForEvent($event->id)
             ->with(['ticket', 'order'])
             ->first();
 
-        // Invalid ticket
         if (! $orderItem) {
             return response()->json([
                 'status' => 'invalid',
@@ -73,7 +58,6 @@ class CheckInController extends Controller
             ]);
         }
 
-        // Already checked in
         if ($orderItem->is_checked_in) {
             return response()->json([
                 'status' => 'already_used',
@@ -84,7 +68,6 @@ class CheckInController extends Controller
             ]);
         }
 
-        // Valid — check in
         $orderItem->update([
             'is_checked_in' => true,
             'checked_in_at' => now(),

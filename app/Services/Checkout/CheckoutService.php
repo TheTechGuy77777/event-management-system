@@ -66,22 +66,14 @@ class CheckoutService
         );
     }
 
-    public function completeFreeOrder(Order $order, Event $event, Ticket $ticket, array $validated): void
+    private function completeFreeOrder(Order $order, Event $event): void
     {
-        $this->orderService->completeOrder(
-            $order,
-            $event,
-            $ticket,
-            $validated['quantity'],
-            $validated['attendees'] ?? [],
-            $validated['buyer_name'],
-            $validated['buyer_email']
-        );
+        $this->orderService->completeOrder($order, $event);
     }
 
     public function processStore(Event $event, array $validated, Ticket $ticket, string $slug): CheckoutStoreResult
     {
-        if ($this->ticketService->isSoldOut($ticket)) {
+        if ($ticket->isSoldOut()) {
             throw new CheckoutException('Sorry, this ticket is sold out.');
         }
 
@@ -89,20 +81,26 @@ class CheckoutService
             throw new CheckoutException('Not enough tickets available.');
         }
 
-        $prepared = $this->prepare($event, $validated, $ticket);
-        $order = $this->orderService->createPendingOrder($event, $prepared->orderData, $prepared->promo);
+        if ($ticket->purchase_limit > 0 && $validated['quantity'] > $ticket->purchase_limit) {
+            throw new CheckoutException('Maximum purchase limit for this ticket is '.$ticket->purchase_limit.'.');
+        }
 
-        $this->sessionService->store(
-            $order->id,
-            $ticket->id,
+        $prepared = $this->prepare($event, $validated, $ticket);
+        $order = $this->orderService->createPendingOrder(
+            $event,
+            $ticket,
             $validated['quantity'],
             $validated['attendees'] ?? [],
             $validated['buyer_name'],
-            $validated['buyer_email']
+            $validated['buyer_email'],
+            $prepared->orderData,
+            $prepared->promo
         );
 
+        $this->sessionService->store($order->id, $validated['buyer_email']);
+
         if ($prepared->isFree) {
-            $this->completeFreeOrder($order, $event, $ticket, $validated);
+            $this->completeFreeOrder($order, $event);
 
             return new CheckoutStoreResult(
                 order: $order,

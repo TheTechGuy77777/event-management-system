@@ -22,6 +22,7 @@ class TicketConfirmationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->order->buyer_email,
             subject: 'Your Tickets for '.$this->event->name.' 🎉',
         );
     }

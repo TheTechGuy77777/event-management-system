@@ -19,7 +19,10 @@ class CheckoutRequest extends FormRequest
             'buyer_name' => ['required', 'string', 'max:255'],
             'buyer_email' => ['required', 'email'],
             'buyer_phone' => ['nullable', 'string', 'max:20'],
-            'gateway' => ['required', 'in:paystack,monnify'],
+            'gateway' => ['required', 'in:paystack'],
+            'attendees' => ['nullable', 'array', 'max:10'],
+            'attendees.*.name' => ['nullable', 'string', 'max:255'],
+            'attendees.*.email' => ['nullable', 'email'],
         ];
     }
 }

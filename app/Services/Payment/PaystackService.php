@@ -16,7 +16,7 @@ class PaystackService
             $response = Http::withToken(config('services.paystack.secret_key'))
                 ->post(config('services.paystack.payment_url').'/transaction/initialize', [
                     'email' => $email,
-                    'amount' => $amount * 100,
+                    'amount' => (int) round($amount * 100),
                     'reference' => $reference,
                     'callback_url' => route('checkout.callback', ['slug' => $slug]),
                     'metadata' => [
@@ -35,7 +35,7 @@ class PaystackService
 
             Log::warning('Paystack initialization failed', [
                 'order_id' => $order->id,
-                'response' => $response->body(),
+                'status' => $response->status(),
             ]);
 
             throw new PaymentException('Payment initialization failed. Please try again.');
@@ -58,7 +58,7 @@ class PaystackService
             if (! $response->successful() || ! $response->json('status')) {
                 Log::warning('Paystack verification failed', [
                     'reference' => $reference,
-                    'response' => $response->body(),
+                    'status' => $response->status(),
                 ]);
 
                 throw new PaymentException('Payment verification failed.');

@@ -20,12 +20,15 @@ class Order extends Model
         'payment_reference',
         'payment_gateway',
         'payment_status',
+        'checkout_meta',
     ];
 
     protected $casts = [
         'total_amount' => 'decimal:2',
         'platform_commission' => 'decimal:2',
         'manager_earnings' => 'decimal:2',
+        'payment_reference' => 'string',
+        'checkout_meta' => 'array',
     ];
 
     // Relationships
@@ -48,5 +51,15 @@ class Order extends Model
     public function isPending(): bool
     {
         return $this->payment_status === 'pending';
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->payment_status === 'failed';
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

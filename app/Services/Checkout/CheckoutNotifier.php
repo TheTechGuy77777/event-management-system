@@ -12,13 +12,14 @@ class CheckoutNotifier
 {
     public function sendTicketConfirmation(Order $order, Event $event): void
     {
-        Mail::to($order->buyer_email)->send(new TicketConfirmationMail($order, $event));
+        Mail::to($order->buyer_email)->queue(new TicketConfirmationMail($order, $event));
     }
 
     public function notifyEventManager(Order $order, Event $event, int $quantity): void
     {
         Notification::create([
             'user_id' => $event->user_id,
+            'event_id' => $event->id,
             'title' => 'New Ticket Sale! 🎉',
             'message' => $order->buyer_name.' just bought '.$quantity.
                 ' ticket(s) for '.$event->name.'. Total: ₦'.

@@ -10,6 +10,7 @@ use App\Models\Event;
 use App\Models\Order;
 use App\Models\Ticket;
 use App\Services\Checkout\CheckoutService;
+use App\Services\Checkout\CheckoutSessionService;
 use App\Services\Checkout\PromoService;
 use App\Services\Payment\PaymentCompletionService;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class CheckoutController extends Controller
         private CheckoutService $checkoutService,
         private PaymentCompletionService $paymentCompletionService,
         private PromoService $promoService,
+        private CheckoutSessionService $sessionService,
     ) {}
 
     public function index($slug)
@@ -32,9 +34,9 @@ class CheckoutController extends Controller
         $ticketId = request('ticket');
         $selectedTicket = null;
 
-        if ($ticketId) {
+        if ($ticketId && is_numeric($ticketId)) {
             $selectedTicket = $event->tickets
-                ->where('id', $ticketId)
+                ->where('id', (int) $ticketId)
                 ->where('is_active', true)
                 ->first();
         }
@@ -50,6 +52,10 @@ class CheckoutController extends Controller
             ->firstOrFail();
 
         $ticket = Ticket::findOrFail($request->validated('ticket_id'));
+
+        if ((int) $ticket->event_id !== (int) $event->id) {
+            abort(403, 'Invalid ticket for this event.');
+        }
 
         try {
             $result = $this->checkoutService->processStore($event, $request->validated(), $ticket, $slug);
@@ -84,10 +90,28 @@ class CheckoutController extends Controller
     public function success($slug, Request $request)
     {
         $event = Event::where('slug', $slug)->firstOrFail();
+
+        $sessionOrderId = $this->sessionService->getOrderId();
+        $sessionBuyerEmail = $this->sessionService->getBuyerEmail();
+
+        if (! $sessionOrderId || ! $sessionBuyerEmail || (int) $request->order !== (int) $sessionOrderId) {
+            $this->sessionService->clear();
+
+            abort(403, 'Unauthorized');
+        }
+
         $order = Order::with(['items.ticket'])
-            ->where('id', $request->order)
+            ->where('id', $sessionOrderId)
             ->where('event_id', $event->id)
             ->firstOrFail();
+
+        if ($order->buyer_email !== $sessionBuyerEmail) {
+            $this->sessionService->clear();
+
+            abort(403, 'Unauthorized');
+        }
+
+        $this->sessionService->clear();
 
         return view('public.checkout-success', compact('event', 'order'));
     }

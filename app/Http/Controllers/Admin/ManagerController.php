@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ManagerController extends Controller
 {
@@ -19,6 +20,14 @@ class ManagerController extends Controller
 
     public function suspend(User $user)
     {
+        if ($user->isAdmin()) {
+            return back()->with('error', 'You cannot modify another admin account.');
+        }
+
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'You cannot modify your own account.');
+        }
+
         $user->update(['is_active' => false]);
 
         return back()->with('success', $user->name.' has been suspended.');
@@ -26,6 +35,14 @@ class ManagerController extends Controller
 
     public function ban(User $user)
     {
+        if ($user->isAdmin()) {
+            return back()->with('error', 'You cannot modify another admin account.');
+        }
+
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'You cannot modify your own account.');
+        }
+
         $user->update(['is_active' => false, 'is_banned' => true]);
         $user->events()->where('status', 'published')->update(['status' => 'cancelled']);
 
@@ -34,6 +51,14 @@ class ManagerController extends Controller
 
     public function reactivate(User $user)
     {
+        if ($user->isAdmin()) {
+            return back()->with('error', 'You cannot modify another admin account.');
+        }
+
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'You cannot modify your own account.');
+        }
+
         $user->update(['is_active' => true, 'is_banned' => false]);
 
         return back()->with('success', $user->name.' has been reactivated.');

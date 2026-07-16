@@ -2,21 +2,22 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
 
-class AdminMiddleware
+class AdminMiddleware extends BasePortalMiddleware
 {
-    public function handle(Request $request, Closure $next): Response
+    protected function getRoleCheck(User $user): bool
     {
-        $user = Auth::user();
+        return $user->isAdmin();
+    }
 
-        if (! $user || ! $user->isAdmin()) {
-            abort(403, 'Unauthorized');
-        }
+    protected function getSuspendedMessage(): string
+    {
+        return 'Your account has been suspended. Please contact support.';
+    }
 
-        return $next($request);
+    protected function getBannedMessage(): string
+    {
+        return 'Your account has been permanently disabled.';
     }
 }

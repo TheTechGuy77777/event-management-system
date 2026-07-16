@@ -6,6 +6,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -35,7 +36,11 @@ class ProfileController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            return back()->with('success', 'Password updated successfully.');
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/')->with('success', 'Password updated successfully. Please log in again.');
         }
 
         // Profile update
@@ -56,6 +61,10 @@ class ProfileController extends Controller
 
         // Handle photo upload
         if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo) {
+                Storage::disk('public')->delete($user->profile_photo);
+            }
+
             $data['profile_photo'] = $request->file('profile_photo')
                 ->store('profiles', 'public');
         }

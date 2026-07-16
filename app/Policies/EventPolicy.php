@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\Event;
+use App\Models\User;
+
+class EventPolicy
+{
+    public function view(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id;
+    }
+
+    public function update(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id && $event->status === 'draft';
+    }
+
+    public function delete(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id;
+    }
+
+    public function publish(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id;
+    }
+
+    public function manageAttendees(User $user, Event $event): bool
+    {
+        return $event->user_id === $user->id;
+    }
+}

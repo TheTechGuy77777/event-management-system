@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $query = Event::with(['category', 'tickets'])
+        $query = Event::with(['category', 'tickets', 'user'])
             ->where('status', 'published');
 
         if (request('search')) {
@@ -27,7 +27,6 @@ class HomeController extends Controller
 
         $events = $query->latest('published_at')->paginate(12);
 
-        // Cache categories for 1 hour
         $categories = Cache::remember('active_categories', 3600, function () {
             return Category::where('is_active', true)->get();
         });

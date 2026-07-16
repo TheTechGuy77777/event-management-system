@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -14,33 +15,30 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $totalEvents = Event::where('user_id', $user->id)->count();
+        $stats = Cache::remember("dashboard_stats_{$user->id}", 300, function () use ($user) {
+            return [
+                'totalEvents' => Event::where('user_id', $user->id)->count(),
+                'totalTicketsSold' => OrderItem::completedForManager($user->id)->count(),
+                'totalRevenue' => Order::whereHas('event', function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                })->where('payment_status', 'completed')->sum('manager_earnings'),
+                'upcomingEvents' => Event::where('user_id', $user->id)
+                    ->where('status', 'published')
+                    ->where('start_date', '>', now())
+                    ->count(),
+            ];
+        });
 
-        $totalTicketsSold = OrderItem::whereHas('order', function ($q) use ($user) {
-            $q->whereHas('event', function ($q2) use ($user) {
-                $q2->where('user_id', $user->id);
-            })->where('payment_status', 'completed');
-        })->count();
-
-        $totalRevenue = Order::whereHas('event', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->where('payment_status', 'completed')->sum('manager_earnings');
-
-        $upcomingEvents = Event::where('user_id', $user->id)
-            ->where('status', 'published')
-            ->where('start_date', '>', now())
-            ->count();
-
-        $recentEvents = Event::where('user_id', $user->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        $recentEvents = Cache::remember("dashboard_recent_events_{$user->id}", 300, function () use ($user) {
+            return Event::where('user_id', $user->id)
+                ->with(['category', 'tickets'])
+                ->latest()
+                ->take(5)
+                ->get();
+        });
 
         return view('dashboard', compact(
-            'totalEvents',
-            'totalTicketsSold',
-            'totalRevenue',
-            'upcomingEvents',
+            'stats',
             'recentEvents'
         ));
     }

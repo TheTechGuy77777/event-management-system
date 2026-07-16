@@ -3,8 +3,8 @@
 namespace App\Services\Checkout;
 
 use App\Models\Event;
-use App\Models\PromoCode;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Cache;
 
 class OrderCalculationService
 {
@@ -13,29 +13,15 @@ class OrderCalculationService
         return (float) $ticket->price * $quantity;
     }
 
-    public function applyPromo(?PromoCode $promo, float $subtotal): array
-    {
-        if (! $promo || ! $promo->isValid()) {
-            return [
-                'discount' => 0.0,
-                'new_subtotal' => $subtotal,
-                'applied_promo' => null,
-            ];
-        }
-
-        $discount = $promo->calculateDiscount($subtotal);
-        $newSubtotal = max(0.0, $subtotal - $discount);
-
-        return [
-            'discount' => $discount,
-            'new_subtotal' => $newSubtotal,
-            'applied_promo' => $promo,
-        ];
-    }
-
     public function calculateTotals(Event $event, float $subtotal): array
     {
-        $commissionRate = (float) $event->commission_rate / 100;
+        $eventRate = (float) $event->commission_rate;
+        $globalRate = (float) Cache::get('commission_rate', config('app.commission_rate', 5));
+        $managerRate = $event->user?->custom_commission ?? 0;
+
+        $commissionRate = $eventRate > 0 ? $eventRate : ($managerRate > 0 ? $managerRate : $globalRate);
+        $commissionRate = $commissionRate / 100;
+
         $commission = $subtotal * $commissionRate;
         $managerEarnings = $subtotal - ($event->payment_model === 'manager_pays' ? $commission : 0);
 

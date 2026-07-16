@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EventManagerMiddleware;
 use App\Http\Middleware\SecurityHeaders;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -29,4 +30,14 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('queue:prune-failed --hours=168')
+            ->dailyAt('01:00')
+            ->withoutOverlapping();
+
+        $schedule->command('orders:cancel-stale-pending --hours=24')
+            ->hourly()
+            ->withoutOverlapping();
+    })
+    ->create();

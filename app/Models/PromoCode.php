@@ -24,6 +24,9 @@ class PromoCode extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'expires_at' => 'datetime',
+        'usage_count' => 'integer',
+        'usage_limit' => 'integer',
+        'discount_value' => 'decimal:2',
     ];
 
     public function event()

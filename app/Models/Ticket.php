@@ -26,6 +26,10 @@ class Ticket extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'price' => 'decimal:2',
+        'quantity' => 'integer',
+        'quantity_sold' => 'integer',
+        'purchase_limit' => 'integer',
+        'group_size' => 'integer',
     ];
 
     // Relationships
@@ -42,6 +46,11 @@ class Ticket extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function waitlists()
+    {
+        return $this->hasMany(Waitlist::class);
     }
 
     // Helpers

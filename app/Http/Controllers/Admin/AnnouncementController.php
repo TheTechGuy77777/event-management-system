@@ -8,6 +8,7 @@ use App\Models\Announcement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Bus;
 
 class AnnouncementController extends Controller
 {
@@ -61,10 +62,18 @@ class AnnouncementController extends Controller
             $recipientName = null;
         }
 
-        // Dispatch jobs to queue
-        foreach ($managers as $manager) {
-            SendAnnouncementJob::dispatch($manager, $subject, $message);
-        }
+        // Dispatch jobs to queue as a batch
+        $jobs = $managers->map(function ($manager) use ($subject, $message) {
+            return new SendAnnouncementJob(
+                $manager->id,
+                $manager->email,
+                $manager->name,
+                $subject,
+                $message
+            );
+        })->toArray();
+
+        Bus::batch($jobs)->allowFailures()->dispatch();
 
         // Save announcement history
         Announcement::create([

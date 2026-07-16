@@ -11,7 +11,7 @@ class PaymentCompletionResult
     public function __construct(
         public Order $order,
         public Event $event,
-        public Ticket $ticket,
+        public ?Ticket $ticket,
         public int $quantity,
         public array $attendees,
         public string $buyerName,

@@ -15,12 +15,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'role',
         'organization_name',
         'phone',
         'profile_photo',
         'is_active',
         'is_banned',
+        'custom_commission',
+        'role',
     ];
 
     protected $hidden = [
@@ -35,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'is_active' => 'boolean',
             'is_banned' => 'boolean',
+            'custom_commission' => 'decimal:2',
         ];
     }
 
@@ -49,6 +51,21 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(BankAccount::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function promoCodes()
+    {
+        return $this->hasMany(PromoCode::class);
+    }
+
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class, 'sent_by');
+    }
+
     // Role Helpers
     public function isAdmin(): bool
     {
@@ -58,5 +75,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isEventManager(): bool
     {
         return $this->role === 'event_manager';
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

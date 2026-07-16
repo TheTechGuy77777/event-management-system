@@ -53,6 +53,7 @@ class Event extends Model
         'published_at' => 'datetime',
         'recurrence_end' => 'date',
         'commission_rate' => 'decimal:2',
+        'event_mode' => 'string',
     ];
 
     // Relationships
@@ -81,71 +82,19 @@ class Event extends Model
         return $this->hasMany(Order::class);
     }
 
-    // Status Helpers
-    public function isPublished(): bool
+    public function promoCodes()
     {
-        return $this->status === 'published';
+        return $this->hasMany(PromoCode::class);
     }
 
-    public function isDraft(): bool
+    public function waitlists()
     {
-        return $this->status === 'draft';
+        return $this->hasMany(Waitlist::class);
     }
 
-    public function isCancelled(): bool
+    // Scopes
+    public function scopeForManager($query, int $userId)
     {
-        return $this->status === 'cancelled';
-    }
-
-    public function isEnded(): bool
-    {
-        return $this->status === 'ended';
-    }
-
-    // Event Mode Helpers
-    public function isPhysical(): bool
-    {
-        return $this->event_mode === 'physical' || is_null($this->event_mode);
-    }
-
-    public function isOnline(): bool
-    {
-        return $this->event_mode === 'online';
-    }
-
-    public function isHybrid(): bool
-    {
-        return $this->event_mode === 'hybrid';
-    }
-
-    public function hasOnlineComponent(): bool
-    {
-        return in_array($this->event_mode, ['online', 'hybrid']);
-    }
-
-    // Platform Label
-    public function getPlatformLabelAttribute(): string
-    {
-        return match ($this->platform) {
-            'zoom' => 'Zoom Meeting',
-            'zoom_webinar' => 'Zoom Webinar',
-            'google_meet' => 'Google Meet',
-            'microsoft_teams' => 'Microsoft Teams',
-            'youtube_live' => 'YouTube Live',
-            'custom' => 'Custom Link',
-            default => 'Online',
-        };
-    }
-
-    // Platform Icon
-    public function getPlatformIconAttribute(): string
-    {
-        return match ($this->platform) {
-            'zoom', 'zoom_webinar' => 'fa-solid fa-video',
-            'google_meet' => 'fa-brands fa-google',
-            'microsoft_teams' => 'fa-brands fa-microsoft',
-            'youtube_live' => 'fa-brands fa-youtube',
-            default => 'fa-solid fa-link',
-        };
+        return $query->where('user_id', $userId);
     }
 }

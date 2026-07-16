@@ -24,6 +24,7 @@ class WaitlistNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->waitlist->email,
             subject: '🎟️ A ticket is available for '.$this->event->name.'!',
         );
     }

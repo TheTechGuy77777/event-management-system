@@ -11,6 +11,7 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::where('user_id', Auth::id())
+            ->with('user')
             ->latest()
             ->paginate(20);
 
@@ -18,7 +19,6 @@ class NotificationController extends Controller
             ->where('is_read', false)
             ->count();
 
-        // Mark all as read when viewing
         Notification::where('user_id', Auth::id())
             ->where('is_read', false)
             ->update(['is_read' => true]);
@@ -35,7 +35,6 @@ class NotificationController extends Controller
             abort(403);
         }
 
-        // Mark as read when viewed
         $notification->update(['is_read' => true]);
 
         return view('eventmanager.notifications-show', compact('notification'));

@@ -5,12 +5,15 @@ namespace App\Services\Ticket;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Ticket;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TicketService
 {
-    public function generateUniqueTicketCode(): string
+    private function generateUniqueTicketCode(): string
     {
         do {
             $code = 'EVT-'.strtoupper(Str::random(6));
@@ -19,14 +22,12 @@ class TicketService
         return $code;
     }
 
-    public function generateQrCode(string $ticketCode): string
+    private function generateQrCode(string $ticketCode): string
     {
         $qrPath = 'qrcodes/ticket-'.$ticketCode.'.svg';
         $fullPath = storage_path('app/public/'.$qrPath);
 
-        if (! file_exists(storage_path('app/public/qrcodes'))) {
-            mkdir(storage_path('app/public/qrcodes'), 0755, true);
-        }
+        Storage::disk('public')->makeDirectory('qrcodes');
 
         QrCode::format('svg')
             ->size(200)
@@ -49,30 +50,53 @@ class TicketService
                 $attendeeEmail = $buyerEmail;
             }
 
-            $ticketCode = $this->generateUniqueTicketCode();
-            $qrPath = $this->generateQrCode($ticketCode);
-
-            OrderItem::create([
-                'order_id' => $order->id,
-                'ticket_id' => $ticket->id,
-                'attendee_name' => $attendeeName,
-                'attendee_email' => $attendeeEmail,
-                'ticket_code' => $ticketCode,
-                'unit_price' => $ticket->price,
-                'is_checked_in' => false,
-                'qr_code' => $qrPath,
-            ]);
+            $this->createSingleOrderItem($order, $ticket, $attendeeName, $attendeeEmail);
         }
     }
 
-    public function incrementTicketQuantity(Ticket $ticket, int $quantity): void
+    private function createSingleOrderItem(Order $order, Ticket $ticket, string $attendeeName, string $attendeeEmail): void
     {
-        $ticket->increment('quantity_sold', $quantity);
+        $maxAttempts = 5;
+        $attempt = 0;
+
+        while ($attempt < $maxAttempts) {
+            $attempt++;
+            $ticketCode = $this->generateUniqueTicketCode();
+            $qrPath = $this->generateQrCode($ticketCode);
+
+            try {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'ticket_id' => $ticket->id,
+                    'attendee_name' => $attendeeName,
+                    'attendee_email' => $attendeeEmail,
+                    'ticket_code' => $ticketCode,
+                    'unit_price' => $ticket->price,
+                    'is_checked_in' => false,
+                    'qr_code' => $qrPath,
+                ]);
+
+                return;
+            } catch (QueryException $e) {
+                if (str_contains($e->getMessage(), 'ticket_code') && $attempt < $maxAttempts) {
+                    Storage::disk('public')->delete($qrPath);
+
+                    continue;
+                }
+
+                throw $e;
+            }
+        }
     }
 
-    public function isSoldOut(Ticket $ticket): bool
+    public function incrementTicketQuantity(Ticket $ticket, int $quantity): bool
     {
-        return $ticket->isSoldOut();
+        $affected = DB::table('tickets')
+            ->where('id', $ticket->id)
+            ->whereRaw('quantity_sold + ? <= quantity', [$quantity])
+            ->update(['quantity_sold' => DB::raw('quantity_sold + ?', [$quantity])]);
+
+        return $affected > 0;
     }
 
     public function hasSufficientQuantity(Ticket $ticket, int $quantity): bool

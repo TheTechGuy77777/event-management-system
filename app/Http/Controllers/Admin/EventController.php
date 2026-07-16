@@ -4,9 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Services\Export\CsvExporter;
 
 class EventController extends Controller
 {
+    public function __construct(
+        private CsvExporter $csvExporter,
+    ) {}
+
     public function index()
     {
         $query = Event::with(['user', 'category', 'tickets']);

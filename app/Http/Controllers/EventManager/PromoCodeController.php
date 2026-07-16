@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\EventManager;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventManager\StorePromoCodeRequest;
 use App\Models\Event;
 use App\Models\PromoCode;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class PromoCodeController extends Controller
 {
@@ -25,25 +26,16 @@ class PromoCodeController extends Controller
         return view('eventmanager.promo-codes', compact('promoCodes', 'events'));
     }
 
-    public function store(Request $request)
+    public function store(StorePromoCodeRequest $request)
     {
-        $request->validate([
-            'event_id' => ['required', 'exists:events,id'],
-            'code' => ['nullable', 'string', 'max:20', 'unique:promo_codes'],
-            'discount_type' => ['required', 'in:percentage,fixed'],
-            'discount_value' => ['required', 'numeric', 'min:1'],
-            'usage_limit' => ['nullable', 'integer', 'min:1'],
-            'expires_at' => ['nullable', 'date', 'after:today'],
-        ]);
-
-        // Verify event ownership
-        $event = Event::where('id', $request->event_id)
+        $event = Event::where('id', $request->validated('event_id'))
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-        // Validate percentage max
         if ($request->discount_type === 'percentage' && $request->discount_value > 100) {
-            return back()->with('error', 'Percentage discount cannot exceed 100%.');
+            throw ValidationException::withMessages([
+                'discount_value' => 'Percentage discount cannot exceed 100%.',
+            ]);
         }
 
         PromoCode::create([

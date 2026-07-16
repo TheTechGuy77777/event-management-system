@@ -17,6 +17,11 @@ class BankAccount extends Model
         'currency',
     ];
 
+    protected $hidden = [
+        'account_number',
+        'account_name',
+    ];
+
     // Relationships
     public function user()
     {

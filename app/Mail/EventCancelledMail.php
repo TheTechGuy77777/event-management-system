@@ -22,6 +22,7 @@ class EventCancelledMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->order->buyer_email,
             subject: '⚠️ Event Cancelled — '.$this->event->name,
         );
     }
