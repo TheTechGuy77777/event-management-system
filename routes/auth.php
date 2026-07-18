@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -16,21 +17,18 @@ Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
-    // Rate limit registration — max 5 attempts per 10 minutes
     Route::post('register', [RegisteredUserController::class, 'store'])
         ->middleware('throttle:5,10');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    // Rate limit login — max 5 attempts per minute
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('throttle:5,1');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
-    // Rate limit password reset — max 3 attempts per 10 minutes
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->middleware('throttle:3,10')
         ->name('password.email');
@@ -43,6 +41,7 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
+
 Route::middleware('auth')->group(function () {
 
     Route::get('verify-email', EmailVerificationPromptController::class)
@@ -52,7 +51,6 @@ Route::middleware('auth')->group(function () {
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
-    // Rate limit resend verification — max 3 per 10 minutes
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:3,10')
         ->name('verification.send');

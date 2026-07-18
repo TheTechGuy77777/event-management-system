@@ -36,6 +36,12 @@
                     creating events.
                 </p>
 
+                @if (session('error'))
+                    <div class="mb-5 rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <!-- Status -->
                 @if (session('status') == 'verification-link-sent')
                     <div class="glass-gold rounded-xl p-4 mb-6 text-amber-400 text-sm">

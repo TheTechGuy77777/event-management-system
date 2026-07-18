@@ -4,6 +4,25 @@
 
 @section('content')
 
+    @if ($errors->any())
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+            class="fixed top-6 right-6 z-50 bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-4 rounded-2xl shadow-xl max-w-sm">
+
+            <div class="flex items-start gap-3">
+                <i class="fa-solid fa-circle-exclamation mt-1"></i>
+                <div>
+                    <p class="text-sm font-medium">
+                        {{ $errors->first() }}
+                    </p>
+                </div>
+                <button x-on:click="show=false">
+                    <i class="fa-solid fa-times text-xs"></i>
+                </button>
+            </div>
+
+        </div>
+    @endif
+
     <div class="min-h-screen flex items-center justify-center px-4 py-20">
 
         <!-- Background Effects -->

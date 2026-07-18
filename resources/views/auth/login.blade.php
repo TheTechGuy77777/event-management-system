@@ -41,6 +41,20 @@
                 <form method="POST" action="{{ route('login') }}" class="space-y-5">
                     @csrf
 
+                    @if (session('success'))
+                        <div class="mb-5 rounded-xl bg-green-500/10 border border-green-500/20 p-4 text-green-400 text-sm">
+                            <i class="fa-solid fa-circle-check mr-2"></i>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="mb-5 rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm">
+                            <i class="fa-solid fa-circle-exclamation mr-2"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <!-- Email -->
                     <div>
                         <label class="text-gray-400 text-sm font-medium mb-2 block">Email Address</label>

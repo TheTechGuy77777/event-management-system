@@ -7,11 +7,12 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
 
@@ -29,7 +30,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (InvalidSignatureException $e, $request) {
+            if ($request->user()) {
+                return redirect()
+                    ->route('verification.notice')
+                    ->with('error', 'This verification link is invalid or has expired. Please request a new verification email.');
+            }
+
+            return redirect()
+                ->route('login')
+                ->with('error', 'This verification link is invalid or has expired. Please request a new verification email.');
+        });
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('queue:prune-failed --hours=168')
@@ -38,6 +49,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $schedule->command('orders:cancel-stale-pending --hours=24')
             ->hourly()
+            ->withoutOverlapping();
+
+        $schedule->command('users:delete-unverified')
+            ->dailyAt('02:00')
             ->withoutOverlapping();
     })
     ->create();

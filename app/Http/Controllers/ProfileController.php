@@ -71,11 +71,15 @@ class ProfileController extends Controller
 
         $user->update($data);
 
-        return back()->with('success', 'Profile updated successfully.');
+        return redirect()->route('dashboard.profile')->with('success', 'Profile updated successfully.');
     }
 
     public function destroy(Request $request): RedirectResponse
     {
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
+        ]);
+
         $user = $request->user();
         Auth::logout();
         $user->delete();

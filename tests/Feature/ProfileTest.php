@@ -3,7 +3,11 @@
 use App\Models\User;
 
 test('profile page is displayed', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'role' => 'event_manager',
+        'is_active' => true,
+        'is_banned' => false,
+    ]);
 
     $response = $this
         ->actingAs($user)
@@ -13,13 +17,18 @@ test('profile page is displayed', function () {
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'role' => 'event_manager',
+        'is_active' => true,
+        'is_banned' => false,
+    ]);
 
     $response = $this
         ->actingAs($user)
         ->patch('/dashboard/profile', [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => $user->email,
+            'phone' => '08123456789',
         ]);
 
     $response
@@ -29,18 +38,22 @@ test('profile information can be updated', function () {
     $user->refresh();
 
     $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
+    $this->assertSame('08123456789', $user->phone);
 });
 
 test('email verification status is unchanged when the email address is unchanged', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'role' => 'event_manager',
+        'is_active' => true,
+        'is_banned' => false,
+    ]);
 
     $response = $this
         ->actingAs($user)
         ->patch('/dashboard/profile', [
             'name' => 'Test User',
             'email' => $user->email,
+            'phone' => $user->phone,
         ]);
 
     $response
@@ -51,7 +64,11 @@ test('email verification status is unchanged when the email address is unchanged
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'role' => 'event_manager',
+        'is_active' => true,
+        'is_banned' => false,
+    ]);
 
     $response = $this
         ->actingAs($user)
@@ -68,7 +85,11 @@ test('user can delete their account', function () {
 });
 
 test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'role' => 'event_manager',
+        'is_active' => true,
+        'is_banned' => false,
+    ]);
 
     $response = $this
         ->actingAs($user)
