@@ -74,7 +74,9 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="text-amber-400 font-mono font-bold text-sm">{{ $item->ticket_code }}</p>
-                                    <p class="text-gray-500 text-xs mt-0.5">₦{{ number_format($item->unit_price) }}</p>
+                                    <p class="text-gray-500 text-xs mt-0.5">
+                                        ₦{{ number_format($item->price ?? ($item->ticket->price ?? 0)) }}
+                                    </p>
                                 </div>
                             </div>
 

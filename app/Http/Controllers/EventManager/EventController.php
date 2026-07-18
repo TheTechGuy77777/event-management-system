@@ -71,7 +71,7 @@ class EventController extends Controller
 
     public function publish(Event $event)
     {
-        $this->authorize(EventPolicy::class.'.publish', $event);
+        $this->authorize(EventPolicy::class . '.publish', $event);
 
         $this->eventPublishService->publish($event);
 
@@ -81,7 +81,7 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
-        $this->authorize(EventPolicy::class.'.delete', $event);
+        $this->authorize(EventPolicy::class . '.delete', $event);
 
         $orders = Order::where('event_id', $event->id)
             ->where('payment_status', 'completed')
@@ -93,6 +93,7 @@ class EventController extends Controller
         foreach ($orders as $order) {
             Mail::to($order->buyer_email)
                 ->send(new EventCancelledMail($event, $order));
+
             sleep(1);
         }
 
@@ -104,7 +105,7 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        $this->authorize(EventPolicy::class.'.update', $event);
+        $this->authorize(EventPolicy::class . '.update', $event);
 
         $categories = Cache::remember('active_categories', 3600, function () {
             return Category::where('is_active', true)->get();
@@ -115,7 +116,7 @@ class EventController extends Controller
 
     public function update(UpdateEventRequest $request, Event $event)
     {
-        $this->authorize(EventPolicy::class.'.update', $event);
+        $this->authorize(EventPolicy::class . '.update', $event);
 
         $this->eventService->updateEvent(
             $event,

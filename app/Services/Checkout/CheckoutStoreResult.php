@@ -2,6 +2,10 @@
 
 namespace App\Services\Checkout;
 
+use App\Models\Order;
+use App\Models\Event;
+use App\Models\Ticket;
+
 class CheckoutStoreResult
 {
     public function __construct(

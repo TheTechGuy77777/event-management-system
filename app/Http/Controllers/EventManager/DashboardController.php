@@ -37,9 +37,12 @@ class DashboardController extends Controller
                 ->get();
         });
 
-        return view('dashboard', compact(
-            'stats',
-            'recentEvents'
-        ));
+        return view('dashboard', [
+            'totalEvents' => $stats['totalEvents'],
+            'totalTicketsSold' => $stats['totalTicketsSold'],
+            'totalRevenue' => $stats['totalRevenue'],
+            'upcomingEvents' => $stats['upcomingEvents'],
+            'recentEvents' => $recentEvents,
+        ]);
     }
 }

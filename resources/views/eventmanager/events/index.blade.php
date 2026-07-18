@@ -122,9 +122,14 @@
 
                                 <!-- Tickets Sold -->
                                 <td class="px-6 py-4">
+                                    @php
+                                        $sold = $event->tickets->sum('quantity_sold');
+                                        $remaining = $event->tickets->sum('quantity') - $sold;
+                                    @endphp
+
                                     <p class="text-gray-300 text-sm">
-                                        {{ $event->tickets->sum('quantity_sold') }}
-                                        <span class="text-gray-600">/ {{ $event->tickets->sum('quantity') }}</span>
+                                        {{ $sold }} sold
+                                        <span class="text-gray-600">/ {{ $remaining }} left</span>
                                     </p>
                                 </td>
 

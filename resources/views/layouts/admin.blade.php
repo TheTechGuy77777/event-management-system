@@ -513,37 +513,6 @@
 
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        // Auto-initialize all date inputs with flatpickr
-        document.addEventListener('DOMContentLoaded', function() {
-
-            // Date only inputs
-            document.querySelectorAll('input[type="date"]').forEach(function(el) {
-                flatpickr(el, {
-                    dateFormat: 'Y-m-d',
-                    altInput: true,
-                    altFormat: 'D, d M Y',
-                    allowInput: false,
-                });
-            });
-
-            // Datetime-local inputs (for event start/end)
-            document.querySelectorAll('input[type="datetime-local"]').forEach(function(el) {
-                flatpickr(el, {
-                    enableTime: true,
-                    dateFormat: 'Y-m-d H:i',
-                    altInput: true,
-                    altFormat: 'D, d M Y at h:i K',
-                    allowInput: false,
-                    time_24hr: false,
-                    minuteIncrement: 15,
-                });
-            });
-
-        });
-    </script>
     @stack('scripts')
 </body>
 

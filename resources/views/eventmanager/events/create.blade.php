@@ -611,7 +611,7 @@
                                     <!-- Ticket Kind & Admission -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="text-gray-500 text-xs mb-1 block">Ticket Kind</label>
+                                            <label class="text-gray-500 text-xs mb-1 block">Access Type</label>
                                             <select :name="'tickets[' + index + '][ticket_type]'" x-model="ticket.type"
                                                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-300 text-sm focus:outline-none focus:border-amber-400/50 transition-all appearance-none cursor-pointer">
                                                 <option value="free">Free</option>
@@ -633,7 +633,7 @@
                                     <!-- Ticket Name & Price -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="text-gray-500 text-xs mb-1 block">Ticket Name</label>
+                                            <label class="text-gray-500 text-xs mb-1 block">Ticket Type</label>
                                             <input type="text" :name="'tickets[' + index + '][name]'"
                                                 placeholder="e.g. Early Bird, VIP, Regular" maxlength="75"
                                                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
@@ -649,7 +649,7 @@
                                     <!-- Quantity & Limit -->
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
-                                            <label class="text-gray-500 text-xs mb-1 block">Total Quantity</label>
+                                            <label class="text-gray-500 text-xs mb-1 block">Available Tickets</label>
                                             <input type="number" :name="'tickets[' + index + '][quantity]'"
                                                 placeholder="100" min="1"
                                                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">

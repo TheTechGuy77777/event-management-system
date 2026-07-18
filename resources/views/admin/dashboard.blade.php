@@ -18,7 +18,7 @@
                 </div>
                 <span class="text-amber-400 text-xs glass px-2 py-1 rounded-full">Registered</span>
             </div>
-            <div class="font-display text-3xl text-white mb-1">{{ $totalManagers }}</div>
+            <div class="font-display text-3xl text-white mb-1">{{ $stats['totalManagers'] }}</div>
             <div class="text-gray-500 text-sm">Event Managers</div>
         </div>
 
@@ -29,9 +29,9 @@
                     class="w-11 h-11 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <i class="fa-solid fa-calendar-days text-blue-400 text-sm"></i>
                 </div>
-                <span class="text-blue-400 text-xs glass px-2 py-1 rounded-full">{{ $totalPublished }} Live</span>
+                <span class="text-blue-400 text-xs glass px-2 py-1 rounded-full">{{ $stats['totalPublished'] }} Live</span>
             </div>
-            <div class="font-display text-3xl text-white mb-1">{{ $totalEvents }}</div>
+            <div class="font-display text-3xl text-white mb-1">{{ $stats['totalEvents'] }}</div>
             <div class="text-gray-500 text-sm">Total Events</div>
         </div>
 
@@ -44,7 +44,7 @@
                 </div>
                 <span class="text-purple-400 text-xs glass px-2 py-1 rounded-full">Completed</span>
             </div>
-            <div class="font-display text-3xl text-white mb-1">{{ $totalTicketsSold }}</div>
+            <div class="font-display text-3xl text-white mb-1">{{ $stats['totalTicketsSold'] }}</div>
             <div class="text-gray-500 text-sm">Tickets Sold</div>
         </div>
 
@@ -57,7 +57,7 @@
                 </div>
                 <span class="text-green-400 text-xs glass px-2 py-1 rounded-full">Commission</span>
             </div>
-            <div class="font-display text-3xl text-white mb-1">₦{{ number_format($totalRevenue) }}</div>
+            <div class="font-display text-3xl text-white mb-1">₦{{ number_format($stats['totalRevenue']) }}</div>
             <div class="text-gray-500 text-sm">Platform Revenue</div>
         </div>
     </div>
