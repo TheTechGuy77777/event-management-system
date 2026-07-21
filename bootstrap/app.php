@@ -7,7 +7,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,17 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (InvalidSignatureException $e, $request) {
-            if ($request->user()) {
-                return redirect()
-                    ->route('verification.notice')
-                    ->with('error', 'This verification link is invalid or has expired. Please request a new verification email.');
-            }
-
-            return redirect()
-                ->route('login')
-                ->with('error', 'This verification link is invalid or has expired. Please request a new verification email.');
-        });
+        //
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('queue:prune-failed --hours=168')

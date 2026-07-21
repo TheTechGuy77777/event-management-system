@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\Otp;
+use App\Notifications\SendOtpNotification;
+use App\Services\OtpService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
@@ -15,24 +16,16 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, OtpService $otpService): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'phone' => ['required', 'string', 'max:20'],
             'organization_name' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -47,10 +40,24 @@ class RegisteredUserController extends Controller
             'role' => 'event_manager',
         ]);
 
-        event(new Registered($user));
+        $result = $otpService->generate(
+            $user,
+            Otp::PURPOSE_EMAIL_VERIFICATION
+        );
 
-        Auth::login($user);
+        session([
+            'pending_otp_user_id' => $user->id,
+        ]);
 
-        return redirect(route('dashboard.index', absolute: false));
+        $user->notify(
+            new SendOtpNotification($result['code'])
+        );
+
+
+        return redirect()
+            ->route('verification.otp.show', [
+                'token' => $result['otp']->token,
+            ])
+            ->with('success', 'Verification code sent to your email.');
     }
 }

@@ -62,6 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(PromoCode::class);
     }
 
+    public function otps()
+    {
+        return $this->hasMany(Otp::class);
+    }
+
     public function announcements()
     {
         return $this->hasMany(Announcement::class, 'sent_by');
