@@ -1,0 +1,1 @@
+<?php $admin = App\Models\User::where("email", "admin@eventplug.test")->first(); if ($admin) { echo "found: " . $admin->email . " | verified_at: " . ($admin->email_verified_at ?? "NULL") . PHP_EOL; } else { echo "no admin found with that email" . PHP_EOL; }

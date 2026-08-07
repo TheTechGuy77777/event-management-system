@@ -41,4 +41,8 @@ return [
         'payment_url' => env('PAYSTACK_PAYMENT_URL', 'https://api.paystack.co'),
     ],
 
+    'whatsapp' => [
+        'support_number' => env('WHATSAPP_SUPPORT_NUMBER'),
+    ],
+
 ];

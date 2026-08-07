@@ -71,11 +71,62 @@
                                             📅 {{ $event->start_date?->format('l, d F Y \a\t h:i A') }}
                                         </p>
                                         <p style="margin:0; font-size:13px; color:#9ca3af;">
-                                            📍 {{ $event->is_virtual ? 'Virtual Event' : $event->location ?? 'TBA' }}
+                                            📍
+                                            {{ $event->event_mode === 'online' ? 'Online Event' : $event->location ?? 'TBA' }}
                                         </p>
                                     </td>
                                 </tr>
                             </table>
+
+                            @if (in_array($event->event_mode, ['online', 'hybrid']))
+                                <table width="100%" cellpadding="0" cellspacing="0"
+                                    style="background:#252525; border-radius:16px; margin-bottom:20px; border:1px solid rgba(59,130,246,0.3);">
+                                    <tr>
+                                        <td style="padding:20px;">
+                                            <p style="margin:0 0 12px; font-size:15px; font-weight:700; color:#ffffff;">
+                                                🎥 Join Online
+                                            </p>
+
+                                            @if ($event->meeting_link)
+                                                <p style="margin:0 0 4px; font-size:12px; color:#9ca3af;">
+                                                    Meeting Link
+                                                    ({{ ucwords(str_replace('_', ' ', $event->platform)) }})
+                                                </p>
+                                                <p style="margin:0 0 12px;">
+                                                    <a href="{{ $event->meeting_link }}"
+                                                        style="color:#f59e0b; font-size:13px; word-break:break-all;">
+                                                        {{ $event->meeting_link }}
+                                                    </a>
+                                                </p>
+                                            @endif
+
+                                            @if ($event->meeting_id)
+                                                <p style="margin:0 0 4px; font-size:12px; color:#9ca3af;">
+                                                    Meeting ID: <span
+                                                        style="color:#ffffff; font-family:monospace;">{{ $event->meeting_id }}</span>
+                                                </p>
+                                            @endif
+
+                                            @if ($event->meeting_passcode)
+                                                <p style="margin:0 0 12px; font-size:12px; color:#9ca3af;">
+                                                    Passcode: <span
+                                                        style="color:#ffffff; font-family:monospace;">{{ $event->meeting_passcode }}</span>
+                                                </p>
+                                            @endif
+
+                                            @if ($event->whatsapp_link)
+                                                <p
+                                                    style="margin:12px 0 0; padding-top:12px; border-top:1px solid #333;">
+                                                    <a href="{{ $event->whatsapp_link }}"
+                                                        style="color:#22c55e; font-size:13px; font-weight:700;">
+                                                        💬 Join WhatsApp Group
+                                                    </a>
+                                                </p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </table>
+                            @endif
 
                             <!-- Tickets -->
                             <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
@@ -112,6 +163,12 @@
                                                                     style="padding-top:12px; text-align:center;">
                                                                     <div
                                                                         style="background:rgba(245,158,11,0.1); border:2px dashed rgba(245,158,11,0.4); border-radius:12px; padding:16px; display:inline-block;">
+                                                                        @if ($item->qr_code $item->qr_code && $event->event_mode !== 'online')
+                                                                            <img src="{{ url('storage/' . $item->qr_code) }}"
+                                                                                alt="Ticket QR Code" width="140"
+                                                                                height="140"
+                                                                                style="display:block; margin:0 auto 10px;">
+                                                                        @endif
                                                                         <p
                                                                             style="margin:0 0 6px; color:#9ca3af; font-size:11px; text-transform:uppercase; letter-spacing:1px;">
                                                                             Your Ticket Code</p>

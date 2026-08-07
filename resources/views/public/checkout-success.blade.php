@@ -81,7 +81,7 @@
                             </div>
 
                             <!-- QR Code -->
-                            @if ($item->qr_code)
+                            @if ($item->qr_code && $event->event_mode !== 'online')
                                 <div class="flex items-center justify-between pt-4 border-t border-white/5">
                                     <div>
                                         <p class="text-gray-400 text-xs mb-1">Scan at entrance</p>
@@ -104,6 +104,53 @@
                         ₦{{ number_format($order->total_amount) }}
                     </span>
                 </div>
+
+                @if (in_array($event->event_mode, ['online', 'hybrid']))
+                    <div class="border-t border-white/5 mt-6 pt-6">
+                        <h3 class="text-white font-semibold mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-video text-blue-400"></i>
+                            Join Online
+                        </h3>
+
+                        <div class="glass rounded-xl p-4 space-y-3">
+                            @if ($event->meeting_link)
+                                <div>
+                                    <p class="text-gray-500 text-xs mb-1">Meeting Link
+                                        ({{ ucwords(str_replace('_', ' ', $event->platform)) }})</p>
+                                    <a href="{{ $event->meeting_link }}" target="_blank"
+                                        class="text-amber-400 text-sm font-medium break-all hover:underline">
+                                        {{ $event->meeting_link }}
+                                    </a>
+                                </div>
+                            @endif
+
+                            @if ($event->meeting_id)
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500 text-xs">Meeting ID</span>
+                                    <span class="text-white text-sm font-mono">{{ $event->meeting_id }}</span>
+                                </div>
+                            @endif
+
+                            @if ($event->meeting_passcode)
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500 text-xs">Passcode</span>
+                                    <span class="text-white text-sm font-mono">{{ $event->meeting_passcode }}</span>
+                                </div>
+                            @endif
+
+                            @if ($event->whatsapp_link)
+                                <div class="pt-3 border-t border-white/5">
+                                    <p class="text-gray-500 text-xs mb-1">WhatsApp Group</p>
+                                    <a href="{{ $event->whatsapp_link }}" target="_blank"
+                                        class="inline-flex items-center gap-2 text-green-400 text-sm font-medium hover:underline">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                        Join WhatsApp Group
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
 
             <!-- Email Notice -->

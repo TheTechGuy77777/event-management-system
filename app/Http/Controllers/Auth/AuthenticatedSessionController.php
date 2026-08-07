@@ -22,7 +22,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, \App\Services\OtpService $otpService): RedirectResponse
     {
         $request->authenticate();
 
@@ -46,6 +46,20 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('login')->withErrors([
                 'email' => 'Your account has been suspended. Please contact support for assistance.',
             ]);
+        }
+
+        // Block unverified users — route them back into OTP verification
+        if (! $user->hasVerifiedEmail()) {
+            Auth::guard('web')->logout();
+
+            $result = $otpService->generate($user, \App\Models\Otp::PURPOSE_EMAIL_VERIFICATION);
+
+            session(['pending_otp_user_id' => $user->id]);
+
+            $user->notify(new \App\Notifications\SendOtpNotification($result['code']));
+
+            return redirect()->route('verification.otp.show', ['token' => $result['otp']->token])
+                ->with('success', 'Please verify your email to continue. A new code has been sent.');
         }
 
         // Role-based redirect

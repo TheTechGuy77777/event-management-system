@@ -307,7 +307,7 @@
                             <i class="fa-solid fa-bolt text-black text-sm font-bold"></i>
                         </div>
                         <span class="font-display text-xl tracking-tight">
-                            Event<span class="gold-text">Plug</span>
+                            Chibuzo<span class="gold-text">Connect</span>
                         </span>
                     </a>
 
@@ -404,7 +404,7 @@
                                 <i class="fa-solid fa-bolt text-black text-sm"></i>
                             </div>
                             <span class="font-display text-xl">
-                                Event<span class="gold-text">Plug</span>
+                                Chibuzo<span class="gold-text">Connect</span>
                             </span>
                         </a>
                         <p class="text-gray-500 text-sm leading-relaxed max-w-sm">
@@ -480,7 +480,7 @@
                 <div
                     class="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p class="text-gray-600 text-sm">
-                        © {{ date('Y') }} EventPlug. All rights reserved.
+                        © {{ date('Y') }} ChibuzoConnect. All rights reserved.
                     </p>
                     <div class="flex items-center gap-2 text-gray-600 text-sm">
                         <span>Made with</span>
@@ -544,6 +544,9 @@
         });
     </script>
     @stack('scripts')
+
+    <x-whatsapp-float />
+
 </body>
 
 </html>

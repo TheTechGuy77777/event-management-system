@@ -269,10 +269,9 @@
                             </div>
                         </label>
 
-                        <label class="cursor-pointer">
-                            <input type="radio" name="gateway" value="monnify" class="hidden peer">
-                            <div
-                                class="glass rounded-xl p-4 border-2 border-transparent peer-checked:border-amber-400/50 peer-checked:bg-amber-400/5 transition-all duration-200 hover:border-white/20">
+                        <label class="cursor-not-allowed opacity-50">
+                            <input type="radio" name="gateway" value="monnify" disabled class="hidden peer">
+                            <div class="glass rounded-xl p-4 border-2 border-transparent">
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 bg-green-500/20 border border-green-500/30 rounded-xl flex items-center justify-center">
@@ -280,7 +279,7 @@
                                     </div>
                                     <div>
                                         <p class="text-white text-sm font-semibold">Monnify</p>
-                                        <p class="text-gray-500 text-xs">Bank Transfer, USSD</p>
+                                        <p class="text-gray-500 text-xs">Coming soon</p>
                                     </div>
                                 </div>
                             </div>
@@ -316,11 +315,20 @@
                             </div>
                         @endif
 
-                        <div class="border-t border-white/5 pt-3 flex items-center justify-between">
-                            <span class="text-white font-semibold">Total</span>
-                            <span class="text-amber-400 font-bold text-lg"
-                                x-text="'₦' + Math.round(ticketPrice * quantity * {{ $event->payment_model === 'attendee_pays' ? 1 + $event->commission_rate / 100 : 1 }}).toLocaleString()">
-                            </span>
+                        <div class="border-t border-white/5 pt-3 space-y-1">
+                            <template x-if="promoApplied">
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-green-400">Promo discount</span>
+                                    <span class="text-green-400"
+                                        x-text="'-₦' + Math.round(promoDiscount).toLocaleString()"></span>
+                                </div>
+                            </template>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white font-semibold">Total</span>
+                                <span class="text-amber-400 font-bold text-lg"
+                                    x-text="'₦' + Math.max(0, Math.round((ticketPrice * quantity * {{ $event->payment_model === 'attendee_pays' ? 1 + $event->commission_rate / 100 : 1 }}) - promoDiscount)).toLocaleString()">
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -331,19 +339,21 @@
                     @endif
 
                     <!-- Promo Code -->
-                    <div class="mb-4" x-data="{ promoApplied: false, promoMessage: '', promoDiscount: 0 }">
+                    <div class="mb-4">
                         <label class="text-gray-400 text-sm font-medium mb-2 block">Promo Code</label>
                         <div class="flex gap-2">
-                            <input type="text" id="promo-input" placeholder="Enter code"
-                                oninput="this.value = this.value.toUpperCase()"
+                            <input type="text" x-model="promoCode" placeholder="Enter code"
+                                @input="promoCode = promoCode.toUpperCase()"
                                 class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all font-mono">
-                            <button type="button" onclick="applyPromo()"
-                                class="btn-outline-gold px-4 py-2.5 rounded-xl font-semibold text-xs">
-                                Apply
+                            <button type="button" @click="applyPromo()" :disabled="promoValidating"
+                                class="btn-outline-gold px-4 py-2.5 rounded-xl font-semibold text-xs disabled:opacity-50">
+                                <span x-show="!promoValidating">Apply</span>
+                                <span x-show="promoValidating">...</span>
                             </button>
                         </div>
-                        <p id="promo-message" class="text-xs mt-2 hidden"></p>
-                        <input type="hidden" name="promo_code" id="promo-code-value">
+                        <p x-show="promoMessage" x-text="promoMessage"
+                            :class="promoValid ? 'text-green-400' : 'text-red-400'" class="text-xs mt-2"></p>
+                        <input type="hidden" name="promo_code" :value="promoApplied ? promoCode : ''">
                     </div>
 
 
@@ -355,7 +365,7 @@
 
                     <p class="text-gray-600 text-xs text-center mt-3">
                         <i class="fa-solid fa-shield-halved text-amber-400/50 mr-1"></i>
-                        Secured by Paystack & Monnify
+                        Secured by Paystack
                     </p>
                 </div>
             </div>
@@ -375,69 +385,72 @@
                 selectedTicketName: '{{ $selectedTicket ? $selectedTicket->name : $event->tickets->first()?->name ?? '' }}',
                 buyingForOthers: false,
 
+                promoCode: '',
+                promoApplied: false,
+                promoValid: false,
+                promoMessage: '',
+                promoDiscount: 0,
+                promoValidating: false,
+
                 updateTicket(price, limit, name, remaining) {
                     this.ticketPrice = price;
                     this.maxQuantity = Math.min(limit, remaining);
                     this.selectedTicketName = name;
                     this.quantity = 1;
-                }
-            }
-        }
+                    this.resetPromo();
+                },
 
-        async function applyPromo() {
-            const code = document.getElementById('promo-input').value.trim();
-            const message = document.getElementById('promo-message');
+                resetPromo() {
+                    this.promoApplied = false;
+                    this.promoValid = false;
+                    this.promoMessage = '';
+                    this.promoDiscount = 0;
+                },
 
-            if (!code) return;
+                async applyPromo() {
+                    if (!this.promoCode.trim() || this.promoValidating) return;
 
-            // Get selected ticket price and quantity
-            const selectedTicket = document.querySelector('input[name="ticket_id"]:checked');
-            const quantity = parseInt(document.querySelector('input[name="quantity"]')?.value || 1);
+                    this.promoValidating = true;
+                    this.promoMessage = 'Validating...';
 
-            // Get price from Alpine data
-            const priceEl = document.querySelector('[x-text*="ticketPrice"]');
+                    const rawTotal = this.ticketPrice * this.quantity *
+                        {{ $event->payment_model === 'attendee_pays' ? 1 + $event->commission_rate / 100 : 1 }};
 
-            message.classList.remove('hidden');
-            message.className = 'text-xs mt-2 text-gray-400';
-            message.textContent = 'Validating...';
+                    try {
+                        const response = await fetch('{{ route('promo.validate') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            body: JSON.stringify({
+                                code: this.promoCode,
+                                event_id: {{ $event->id }},
+                                amount: rawTotal,
+                            }),
+                        });
 
-            try {
-                const response = await fetch('{{ route('promo.validate') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        code: code,
-                        event_id: {{ $event->id }},
-                        amount: window.checkoutData?.totalAmount ||
-                            {{ $event->tickets->where('ticket_type', 'paid')->first()?->price ?? 0 }}
-                    })
-                });
+                        const data = await response.json();
 
-                const data = await response.json();
-                message.classList.remove('hidden');
-
-                if (data.valid) {
-                    message.className = 'text-xs mt-2 text-green-400';
-                    message.textContent = '✓ ' + data.message + ' — ₦' + Number(data.discount_amount).toLocaleString() +
-                        ' off';
-                    document.getElementById('promo-code-value').value = code;
-
-                    // Update total display
-                    const totalEl = document.querySelector('[x-text*="total"]');
-                    if (totalEl) {
-                        totalEl.textContent = '₦' + Number(data.new_total).toLocaleString();
+                        if (data.valid) {
+                            this.promoApplied = true;
+                            this.promoValid = true;
+                            this.promoDiscount = Number(data.discount_amount);
+                            this.promoMessage = '✓ ' + data.message + ' — ₦' + this.promoDiscount.toLocaleString() +
+                                ' off';
+                        } else {
+                            this.resetPromo();
+                            this.promoValid = false;
+                            this.promoMessage = '✗ ' + data.message;
+                        }
+                    } catch (e) {
+                        this.resetPromo();
+                        this.promoValid = false;
+                        this.promoMessage = '✗ Something went wrong. Please try again.';
+                    } finally {
+                        this.promoValidating = false;
                     }
-                } else {
-                    message.className = 'text-xs mt-2 text-red-400';
-                    message.textContent = '✗ ' + data.message;
-                    document.getElementById('promo-code-value').value = '';
-                }
-            } catch (error) {
-                message.className = 'text-xs mt-2 text-red-400';
-                message.textContent = '✗ Something went wrong. Please try again.';
+                },
             }
         }
     </script>

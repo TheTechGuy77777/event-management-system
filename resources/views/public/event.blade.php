@@ -107,9 +107,13 @@
                             </div>
                             <div>
                                 <p class="text-gray-500 text-xs mb-1">Location</p>
-                                @if ($event->is_virtual)
-                                    <p class="text-white text-sm font-medium">Virtual Event</p>
+                                @if ($event->event_mode === 'online')
+                                    <p class="text-white text-sm font-medium">Online Event</p>
                                     <p class="text-gray-400 text-xs mt-0.5">Link sent after purchase</p>
+                                @elseif ($event->event_mode === 'hybrid')
+                                    <p class="text-white text-sm font-medium">{{ $event->location ?? 'TBA' }} + Online</p>
+                                    <p class="text-gray-400 text-xs mt-0.5">{{ $event->country }} • Online link sent after
+                                        purchase</p>
                                 @else
                                     <p class="text-white text-sm font-medium">{{ $event->location ?? 'TBA' }}</p>
                                     <p class="text-gray-400 text-xs mt-0.5">{{ $event->country }}</p>

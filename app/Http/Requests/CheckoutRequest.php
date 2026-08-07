@@ -23,6 +23,7 @@ class CheckoutRequest extends FormRequest
             'attendees' => ['nullable', 'array', 'max:10'],
             'attendees.*.name' => ['nullable', 'string', 'max:255'],
             'attendees.*.email' => ['nullable', 'email'],
+            'promo_code' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

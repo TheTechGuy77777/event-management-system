@@ -380,6 +380,9 @@
                     <a href="{{ route('home') }}" class="sidebar-link">
                         <i class="fa-solid fa-globe sidebar-icon"></i>View Website
                     </a>
+
+                    <x-whatsapp-sidebar-link />
+
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
@@ -387,6 +390,7 @@
                             <i class="fa-solid fa-arrow-right-from-bracket sidebar-icon"></i>Sign Out
                         </button>
                     </form>
+
                 </div>
             </nav>
         </aside>

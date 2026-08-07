@@ -59,9 +59,31 @@
                                             class="text-white text-sm font-medium truncate max-w-[180px] group-hover:text-amber-400 transition-colors">
                                             {{ $event->name }}
                                         </p>
-                                        <p class="text-gray-500 text-xs mt-0.5">
-                                            {{ $event->category->name ?? 'No category' }}
-                                        </p>
+                                        <div class="flex items-center gap-2 mt-0.5">
+                                            <p class="text-gray-500 text-xs">
+                                                {{ $event->category->name ?? 'No category' }}
+                                            </p>
+                                            @php
+                                                $modeConfig = [
+                                                    'online' => [
+                                                        'label' => 'Online',
+                                                        'color' => 'text-blue-400 bg-blue-500/10',
+                                                    ],
+                                                    'hybrid' => [
+                                                        'label' => 'Hybrid',
+                                                        'color' => 'text-purple-400 bg-purple-500/10',
+                                                    ],
+                                                    'physical' => [
+                                                        'label' => 'Physical',
+                                                        'color' => 'text-gray-400 bg-white/5',
+                                                    ],
+                                                ];
+                                                $mode = $modeConfig[$event->event_mode] ?? $modeConfig['physical'];
+                                            @endphp
+                                            <span class="text-[10px] px-2 py-0.5 rounded-full {{ $mode['color'] }}">
+                                                {{ $mode['label'] }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </td>

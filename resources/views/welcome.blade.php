@@ -191,7 +191,7 @@
                     <i class="fa-solid fa-calendar-xmark text-amber-400/40 text-3xl"></i>
                 </div>
                 <h3 class="text-white font-semibold text-xl mb-2">No Events Yet</h3>
-                <p class="text-gray-500 text-sm mb-8">Be the first to create an amazing event on EventPlug</p>
+                <p class="text-gray-500 text-sm mb-8">Be the first to create an amazing event on ChibuzoConnect</p>
                 <a href="{{ route('register') }}"
                     class="btn-gold px-6 py-3 rounded-xl text-black font-semibold text-sm inline-block">
                     Create the First Event
@@ -215,7 +215,7 @@
                     Simple & Fast
                 </div>
                 <h2 class="font-display text-3xl lg:text-5xl text-white">
-                    How <span class="gold-text">EventPlug</span> Works
+                    How <span class="gold-text">ChibuzoConnect</span> Works
                 </h2>
                 <p class="text-gray-500 mt-4 max-w-xl mx-auto">From idea to sold-out event in three simple steps</p>
             </div>
@@ -251,7 +251,7 @@
                     Ready to Create Your <span class="gold-text">Next Event?</span>
                 </h2>
                 <p class="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
-                    Join hundreds of event organizers already using EventPlug to sell tickets and grow their audience.
+                    Join hundreds of event organizers already using ChibuzoConnect to sell tickets and grow their audience.
                 </p>
                 <a href="{{ route('register') }}"
                     class="btn-gold px-10 py-4 rounded-2xl text-black font-bold text-lg inline-block">

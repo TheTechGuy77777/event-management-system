@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublicEventController;
 use App\Http\Controllers\WaitlistController;
@@ -19,8 +18,8 @@ Route::get('/contact', function () {
     return view('public.contact');
 })->name('contact');
 
+
 // Rate limited routes
 Route::middleware('throttle:10,1')->group(function () {
     Route::post('/events/{slug}/waitlist', [WaitlistController::class, 'store'])->name('waitlist.store');
-    Route::post('/promo-codes/validate', [CheckoutController::class, 'validatePromo'])->name('promo.validate');
 });
