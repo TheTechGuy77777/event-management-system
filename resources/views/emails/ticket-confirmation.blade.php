@@ -24,8 +24,9 @@
                                         <span style="color:#000; font-size:20px; font-weight:900;">⚡</span>
                                     </td>
                                     <td style="padding-left:10px;">
-                                        <span style="font-size:22px; font-weight:900; color:#111827;">Event</span><span
-                                            style="font-size:22px; font-weight:900; color:#f59e0b;">Plug</span>
+                                        <span
+                                            style="font-size:22px; font-weight:900; color:#111827;">Chibuzo</span><span
+                                            style="font-size:22px; font-weight:900; color:#f59e0b;">Connect</span>
                                     </td>
                                 </tr>
                             </table>
@@ -163,7 +164,7 @@
                                                                     style="padding-top:12px; text-align:center;">
                                                                     <div
                                                                         style="background:rgba(245,158,11,0.1); border:2px dashed rgba(245,158,11,0.4); border-radius:12px; padding:16px; display:inline-block;">
-                                                                        @if ($item->qr_code $item->qr_code && $event->event_mode !== 'online')
+                                                                        @if ($item->qr_code && $event->event_mode !== 'online')
                                                                             <img src="{{ url('storage/' . $item->qr_code) }}"
                                                                                 alt="Ticket QR Code" width="140"
                                                                                 height="140"
@@ -283,14 +284,16 @@
         <tr>
             <td align="center" style="padding-top:24px;">
                 <p style="margin:0 0 8px; color:#6b7280; font-size:12px;">
-                    This email was sent by <strong>{{ config('app.name')</strong> on behalf of the event organizer.
+                    This email was sent by <strong>{{ config('app.name') }}</strong> on behalf of the event organizer.
                 </p>
                 <p style="margin:0 0 8px; font-size:12px;">
-                    <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">{{ config('app.name')</a> •
+                    <a href="{{ url('/') }}"
+                        style="color:#f59e0b; text-decoration:none;">{{ config('app.name') }}</a> •
                     <a href="#" style="color:#f59e0b; text-decoration:none;">Terms</a> •
                     <a href="#" style="color:#f59e0b; text-decoration:none;">Privacy</a>
                 </p>
-                <p style="margin:0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name'). All
+                <p style="margin:0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name') }}.
+                    All
                     rights reserved.</p>
             </td>
         </tr>

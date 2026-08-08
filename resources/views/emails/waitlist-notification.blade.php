@@ -24,8 +24,8 @@
                                         <span style="color:#000; font-size:20px;">⚡</span>
                                     </td>
                                     <td style="padding-left:10px;">
-                                        <span style="font-size:22px; font-weight:900; color:#111827;">Event</span>
-                                        <span style="font-size:22px; font-weight:900; color:#f59e0b;">Plug</span>
+                                        <span style="font-size:22px; font-weight:900; color:#111827;">Chibuzo</span>
+                                        <span style="font-size:22px; font-weight:900; color:#f59e0b;">Connect</span>
                                     </td>
                                 </tr>
                             </table>
@@ -126,7 +126,7 @@
                     <tr>
                         <td align="center" style="padding-top:24px;">
                             <p style="margin:0; color:#6b7280; font-size:12px;">
-                                © {{ date('Y') }} {{ config('app.name'). All rights reserved.
+                                © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
                             </p>
                         </td>
                     </tr>

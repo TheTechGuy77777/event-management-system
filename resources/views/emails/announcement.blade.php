@@ -24,8 +24,9 @@
                                         <span style="color:#000; font-size:20px; font-weight:900;">⚡</span>
                                     </td>
                                     <td style="padding-left:10px;">
-                                        <span style="font-size:22px; font-weight:900; color:#111827;">Event</span><span
-                                            style="font-size:22px; font-weight:900; color:#f59e0b;">Plug</span>
+                                        <span
+                                            style="font-size:22px; font-weight:900; color:#111827;">Chibuzo</span><span
+                                            style="font-size:22px; font-weight:900; color:#f59e0b;">Connect</span>
                                     </td>
                                 </tr>
                             </table>
@@ -78,7 +79,8 @@
                                 <tr>
                                     <td style="padding:16px;">
                                         <p style="margin:0; color:#9ca3af; font-size:13px; line-height:1.6;">
-                                            This is an official announcement from the {{ config('app.name') team. If you have any
+                                            This is an official announcement from the {{ config('app.name') }} team. If
+                                            you have any
                                             questions, please contact support.
                                         </p>
                                     </td>
@@ -103,15 +105,18 @@
                     <tr>
                         <td align="center" style="padding-top:24px;">
                             <p style="margin:0 0 8px; color:#6b7280; font-size:12px;">
-                                You received this email because you are a registered Event Manager on {{ config('app.name').
+                                You received this email because you are a registered Event Manager on
+                                {{ config('app.name') }}.
                             </p>
                             <p style="margin:0; font-size:12px;">
-                                <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">{{ config('app.name')</a>
+                                <a href="{{ url('/') }}"
+                                    style="color:#f59e0b; text-decoration:none;">{{ config('app.name') }}</a>
                                 •
                                 <a href="#" style="color:#f59e0b; text-decoration:none;">Terms</a> •
                                 <a href="#" style="color:#f59e0b; text-decoration:none;">Privacy</a>
                             </p>
-                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name').
+                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }}
+                                {{ config('app.name') }}.
                                 All rights reserved.</p>
                         </td>
                     </tr>

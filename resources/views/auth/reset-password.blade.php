@@ -21,7 +21,7 @@
                             class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center glow-gold group-hover:scale-110 transition-transform duration-300">
                             <i class="fa-solid fa-bolt text-black text-sm"></i>
                         </div>
-                        <span class="font-display text-2xl">Event<span class="gold-text">Plug</span></span>
+                        <span class="font-display text-2xl">Chibuzo<span class="gold-text">Connect</span></span>
                     </a>
                     <div class="w-16 h-16 glass-gold rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <i class="fa-solid fa-lock-open text-amber-400 text-2xl"></i>

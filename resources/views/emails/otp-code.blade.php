@@ -35,7 +35,8 @@
                             </p>
                             <p
                                 style="color:#a1a1aa; font-size:14px; line-height:22px; margin:0 0 28px 0; text-align:center;">
-                                Hi {{ $name }}, use the code below to activate your {{ config('app.name') account.
+                                Hi {{ $name }}, use the code below to activate your {{ config('app.name') }}
+                                account.
                             </p>
                         </td>
                     </tr>
@@ -78,7 +79,7 @@
                     <tr>
                         <td align="center" style="padding: 24px 32px 32px 32px;">
                             <p style="color:#52525b; font-size:12px; margin:0;">
-                                &copy; {{ date('Y') }} {{ config('app.name'). All rights reserved.
+                                &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
                             </p>
                         </td>
                     </tr>
