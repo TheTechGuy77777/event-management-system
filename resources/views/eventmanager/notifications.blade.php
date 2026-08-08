@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Notifications — EventPlug')
+@section('title', 'Notifications')
 @section('page-title', 'Notifications')
 @section('page-subtitle', 'Stay updated on your events and account')
 

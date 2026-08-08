@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', $event->name . ' — EventPlug')
+@section('title', $event->name)
 
 @section('content')
 

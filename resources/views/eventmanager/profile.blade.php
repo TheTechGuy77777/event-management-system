@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Profile — EventPlug')
+@section('title', 'Profile')
 @section('page-title', 'Profile & Settings')
 @section('page-subtitle', 'Manage your personal information')
 

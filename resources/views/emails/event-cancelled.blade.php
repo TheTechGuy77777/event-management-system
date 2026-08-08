@@ -161,11 +161,11 @@
                                 We apologize for any inconvenience caused.
                             </p>
                             <p style="margin:0; font-size:12px;">
-                                <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">EventPlug</a>
+                                <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">{{ config('app.name')</a>
                                 •
                                 <a href="#" style="color:#f59e0b; text-decoration:none;">Support</a>
                             </p>
-                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }} EventPlug.
+                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name').
                                 All rights reserved.</p>
                         </td>
                     </tr>

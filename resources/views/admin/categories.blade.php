@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Categories — EventPlug')
+@section('title', 'Categories')
 @section('page-title', 'Event Categories')
 @section('page-subtitle', 'Manage event categories shown during event creation')
 

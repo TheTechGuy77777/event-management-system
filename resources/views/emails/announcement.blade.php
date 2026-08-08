@@ -78,7 +78,7 @@
                                 <tr>
                                     <td style="padding:16px;">
                                         <p style="margin:0; color:#9ca3af; font-size:13px; line-height:1.6;">
-                                            This is an official announcement from the EventPlug team. If you have any
+                                            This is an official announcement from the {{ config('app.name') team. If you have any
                                             questions, please contact support.
                                         </p>
                                     </td>
@@ -103,15 +103,15 @@
                     <tr>
                         <td align="center" style="padding-top:24px;">
                             <p style="margin:0 0 8px; color:#6b7280; font-size:12px;">
-                                You received this email because you are a registered Event Manager on EventPlug.
+                                You received this email because you are a registered Event Manager on {{ config('app.name').
                             </p>
                             <p style="margin:0; font-size:12px;">
-                                <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">EventPlug</a>
+                                <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">{{ config('app.name')</a>
                                 •
                                 <a href="#" style="color:#f59e0b; text-decoration:none;">Terms</a> •
                                 <a href="#" style="color:#f59e0b; text-decoration:none;">Privacy</a>
                             </p>
-                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }} EventPlug.
+                            <p style="margin:8px 0 0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name').
                                 All rights reserved.</p>
                         </td>
                     </tr>

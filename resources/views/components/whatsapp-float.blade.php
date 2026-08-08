@@ -1,10 +1,11 @@
 @php
-    $message = 'Hi EventPlug! I have a question about the platform.';
+    $message = 'Hi ' . config('app.name') . '! I have a question about the platform.';
     $link = \App\Helpers\WhatsappSupportLink::build($message);
 @endphp
 
-<a href="{{ $link }}" target="_blank" rel="noopener noreferrer" aria-label="Chat with EventPlug Support on WhatsApp"
-    title="Need help? Chat with EventPlug Support."
+<a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
+    aria-label="Chat with {{ config('app.name') }} Support on WhatsApp"
+    title="Need help? Chat with {{ config('app.name') }} Support."
     class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-2xl
 hover:scale-110 hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] transition-all duration-300 focus:outline-none focus:ring-2
 focus:ring-offset-2 focus:ring-offset-[#080808] focus:ring-amber-400">

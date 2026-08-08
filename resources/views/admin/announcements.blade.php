@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Announcements — EventPlug')
+@section('title', 'Announcements')
 @section('page-title', 'Announcements')
 @section('page-subtitle', 'Send messages to event managers')
 

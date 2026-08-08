@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Reset Password — EventPlug')
+@section('title', 'Reset Password')
 
 @section('content')
 

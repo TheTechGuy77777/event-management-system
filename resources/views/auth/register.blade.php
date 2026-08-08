@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Create Account — EventPlug')
+@section('title', 'Create Account')
 
 @section('content')
 
@@ -43,7 +43,7 @@
                             class="w-10 h-10 rounded-xl gold-gradient flex items-center justify-center glow-gold group-hover:scale-110 transition-transform duration-300">
                             <i class="fa-solid fa-bolt text-black text-sm"></i>
                         </div>
-                        <span class="font-display text-2xl">Event<span class="gold-text">Plug</span></span>
+                        <span class="font-display text-2xl">Chibuzo<span class="gold-text">Connect</span></span>
                     </a>
                     <h1 class="text-white text-2xl font-bold mb-2">Create your account</h1>
                     <p class="text-gray-500 text-sm">Start selling tickets in minutes — no setup fees</p>

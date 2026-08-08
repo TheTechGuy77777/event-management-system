@@ -25,7 +25,7 @@ class AnnouncementMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '[EventPlug] '.$this->announcementSubject,
+            subject: '[' . config('app.name') . '] ' . $this->announcementSubject,
         );
     }
 

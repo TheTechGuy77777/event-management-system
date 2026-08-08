@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'All Events — EventPlug')
+@section('title', 'All Events')
 @section('page-title', 'All Events')
 @section('page-subtitle', 'View all events across the platform')
 

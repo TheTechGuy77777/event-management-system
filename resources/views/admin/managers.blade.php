@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Event Managers — EventPlug')
+@section('title', 'Event Managers')
 @section('page-title', 'Event Managers')
 @section('page-subtitle', 'Manage all registered event managers')
 

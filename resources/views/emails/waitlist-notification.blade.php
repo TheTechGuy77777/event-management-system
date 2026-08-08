@@ -126,7 +126,7 @@
                     <tr>
                         <td align="center" style="padding-top:24px;">
                             <p style="margin:0; color:#6b7280; font-size:12px;">
-                                © {{ date('Y') }} EventPlug. All rights reserved.
+                                © {{ date('Y') }} {{ config('app.name'). All rights reserved.
                             </p>
                         </td>
                     </tr>

@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'About — EventPlug')
+@section('title', 'About')
 
 @section('content')
 
@@ -24,7 +24,8 @@
                 <span class="gold-text">Event Creators</span>
             </h1>
             <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-                EventPlug was born out of frustration. We watched talented event organizers across Africa struggle with
+                {{ config('app.name') }} was born out of frustration. We watched talented event organizers across Africa
+                struggle with
                 complicated, expensive, and unreliable ticketing platforms built for Western markets. So we built something
                 better.
             </p>
@@ -47,7 +48,7 @@
                 <div class="flex items-center gap-4">
                     <a href="{{ route('register') }}"
                         class="btn-gold px-6 py-3 rounded-xl text-black font-semibold text-sm inline-block">
-                        Join EventPlug
+                        Join {{ config('app.name') }}
                     </a>
                     <a href="{{ route('pricing') }}"
                         class="btn-outline-gold px-6 py-3 rounded-xl font-semibold text-sm inline-block">
@@ -78,7 +79,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ([['icon' => 'fa-handshake', 'title' => 'Transparency', 'desc' => 'No hidden fees. No confusing pricing. Just a simple 5% commission on paid tickets.'], ['icon' => 'fa-shield-halved', 'title' => 'Security', 'desc' => 'Your money and your attendees\' data are always protected with enterprise-grade security.'], ['icon' => 'fa-heart', 'title' => 'Community', 'desc' => 'We\'re building more than a platform — we\'re building a community of African event creators.'], ['icon' => 'fa-rocket', 'title' => 'Innovation', 'desc' => 'We\'re constantly improving EventPlug with features that matter to African event organizers.']] as $value)
+                @foreach ([['icon' => 'fa-handshake', 'title' => 'Transparency', 'desc' => 'No hidden fees. No confusing pricing. Just a simple 5% commission on paid tickets.'], ['icon' => 'fa-shield-halved', 'title' => 'Security', 'desc' => 'Your money and your attendees\' data are always protected with enterprise-grade security.'], ['icon' => 'fa-heart', 'title' => 'Community', 'desc' => 'We\'re building more than a platform — we\'re building a community of African event creators.'], ['icon' => 'fa-rocket', 'title' => 'Innovation', 'desc' => 'We\'re constantly improving {{ config('app.name') }} with features that matter to African event organizers.']] as $value)
                     <div
                         class="glass rounded-2xl p-6 text-center hover:border-amber-400/20 transition-all duration-300 group">
                         <div
@@ -99,7 +100,7 @@
                     Built with <span class="gold-text">❤️</span> in Nigeria
                 </h2>
                 <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm">
-                    EventPlug is proudly built and maintained by a team passionate about African events and technology.
+                    {{ config('app.name') }} is proudly built and maintained by a team passionate about African events and technology.
                 </p>
             </div>
 
@@ -111,7 +112,7 @@
                     <div class="w-20 h-20 gold-gradient rounded-3xl flex items-center justify-center mx-auto mb-6">
                         <i class="fa-solid fa-code text-black text-3xl"></i>
                     </div>
-                    <h3 class="text-white font-bold text-2xl mb-2">EventPlug</h3>
+                    <h3 class="text-white font-bold text-2xl mb-2">{{ config('app.name') }}</h3>
                     <p class="text-amber-400 text-sm mb-4">Final Year Project — Computer Science</p>
                     <p class="text-gray-400 text-sm max-w-lg mx-auto leading-relaxed">
                         This platform was designed and developed as a final year project, demonstrating the full lifecycle
@@ -127,7 +128,7 @@
                 Ready to Create Your <span class="gold-text">Next Event?</span>
             </h2>
             <p class="text-gray-400 mb-8 max-w-xl mx-auto">
-                Join hundreds of event organizers already using EventPlug to sell tickets and grow their audience.
+                Join hundreds of event organizers already using {{ config('app.name') }} to sell tickets and grow their audience.
             </p>
             <a href="{{ route('register') }}"
                 class="btn-gold px-10 py-4 rounded-2xl text-black font-bold text-lg inline-block">

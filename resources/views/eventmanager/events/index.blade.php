@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'My Events — EventPlug')
+@section('title', 'My Events')
 @section('page-title', 'My Events')
 @section('page-subtitle', 'Manage all your events')
 
@@ -154,7 +154,7 @@
                                         <!-- Download Event QR Code -->
                                         @if ($event->status === 'published' && $event->qr_code)
                                             <a href="{{ asset('storage/' . $event->qr_code) }}"
-                                                download="eventplug-qr-{{ $event->slug }}.png"
+                                                download="{{ Str::slug(config('app.name')) }}-qr-{{ $event->slug }}.png"
                                                 class="w-8 h-8 glass rounded-lg flex items-center justify-center text-gray-400 hover:text-amber-400 transition-colors"
                                                 title="Download QR Code">
                                                 <i class="fa-solid fa-qrcode text-xs"></i>

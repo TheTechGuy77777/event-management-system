@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Transactions — EventPlug')
+@section('title', 'Transactions')
 @section('page-title', 'Transactions')
 @section('page-subtitle', 'All ticket purchases across the platform')
 

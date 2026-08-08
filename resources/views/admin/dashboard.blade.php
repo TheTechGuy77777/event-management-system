@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard — EventPlug')
+@section('title', 'Admin Dashboard')
 @section('page-title', 'Admin Dashboard')
 @section('page-subtitle', 'Platform overview and controls')
 

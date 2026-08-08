@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Booking Confirmed — EventPlug')
+@section('title', 'Booking Confirmed')
 
 @section('content')
 

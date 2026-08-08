@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', $notification->title . ' — EventPlug')
+@section('title', $notification->title)
 @section('page-title', 'Notification')
 @section('page-subtitle', $notification->created_at->format('d M Y, h:i A'))
 

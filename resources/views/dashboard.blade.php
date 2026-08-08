@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Dashboard — EventPlug')
+@section('title', 'Dashboard')
 @section('page-title', 'Overview')
 @section('page-subtitle', 'Welcome back, ' . auth()->user()->name . '!')
 

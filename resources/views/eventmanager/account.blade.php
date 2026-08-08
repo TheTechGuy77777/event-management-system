@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Bank Account — EventPlug')
+@section('title', 'Bank Account')
 @section('page-title', 'Bank Account')
 @section('page-subtitle', 'Manage your payout bank details')
 

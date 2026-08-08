@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'EventPlug — Discover Amazing Events')
+@section('title', 'Discover Amazing Events')
 
 @section('content')
 

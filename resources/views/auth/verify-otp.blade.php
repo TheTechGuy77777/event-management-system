@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Verify Email — EventPlug')
+@section('title', 'Verify Email')
 
 @section('content')
 

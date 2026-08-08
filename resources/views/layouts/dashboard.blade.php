@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Dashboard — EventPlug')</title>
+    <title>@yield('title', 'Dashboard') — {{ config('app.name') }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -308,7 +308,7 @@
                         class="w-9 h-9 rounded-xl gold-gradient flex items-center justify-center glow-gold group-hover:scale-110 transition-transform duration-300">
                         <i class="fa-solid fa-bolt text-black text-sm"></i>
                     </div>
-                    <span class="font-display text-lg">Event<span class="gold-text">Plug</span></span>
+                    <span class="font-display text-lg">Chibuzo<span class="gold-text">Connect</span></span>
                 </a>
             </div>
 

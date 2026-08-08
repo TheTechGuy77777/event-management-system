@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Create Event — EventPlug')
+@section('title', 'Create Event')
 @section('page-title', 'Create New Event')
 @section('page-subtitle', 'Fill in the details to get your event live')
 
@@ -376,7 +376,7 @@
                                 class="flex items-center glass rounded-xl overflow-hidden border border-white/10 focus-within:border-amber-400/50 transition-all duration-200">
                                 <span
                                     class="text-gray-500 text-sm px-4 py-3 border-r border-white/10 bg-white/2 whitespace-nowrap">
-                                    eventplug.test/events/
+                                    {{ request()->getHost() }}/events/
                                 </span>
                                 <input type="text" name="slug" id="slug-input" value="{{ old('slug') }}"
                                     placeholder="your-event-slug"

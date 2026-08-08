@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Pricing — EventPlug')
+@section('title', 'Pricing')
 
 @section('content')
 
@@ -24,7 +24,7 @@
                 <span class="gold-text">Ever.</span>
             </h1>
             <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                EventPlug works on a simple commission model. You only pay when you sell tickets. No monthly fees, no setup
+                {{ config('app.name') }} works on a simple commission model. You only pay when you sell tickets. No monthly fees, no setup
                 costs, no hidden charges.
             </p>
         </div>
@@ -129,7 +129,7 @@
             </h2>
 
             <div class="space-y-4" x-data="{ open: null }">
-                @foreach ([['q' => 'When do I receive my payout?', 'a' => 'Payouts are processed after your event ends. The platform commission is deducted and the remaining balance is transferred to your registered bank account within 2-3 business days.'], ['q' => 'Can I create free events?', 'a' => 'Yes! You can create free events and free ticket types at no cost. The 5% commission only applies to paid tickets.'], ['q' => 'Is there a limit on how many events I can create?', 'a' => 'No limit! Create as many events as you need. EventPlug grows with your business.'], ['q' => 'What payment methods do attendees use?', 'a' => 'We support card payments, bank transfers, and USSD via Paystack and Monnify — Nigeria\'s most trusted payment gateways.'], ['q' => 'Can I offer discount codes?', 'a' => 'Yes! You can create promo codes with percentage or fixed discounts, set usage limits, and expiry dates from your dashboard.']] as $index => $faq)
+                @foreach ([['q' => 'When do I receive my payout?', 'a' => 'Payouts are processed after your event ends. The platform commission is deducted and the remaining balance is transferred to your registered bank account within 2-3 business days.'], ['q' => 'Can I create free events?', 'a' => 'Yes! You can create free events and free ticket types at no cost. The 5% commission only applies to paid tickets.'], ['q' => 'Is there a limit on how many events I can create?', 'a' => 'No limit! Create as many events as you need. {{ config('app.name') }} grows with your business.'], ['q' => 'What payment methods do attendees use?', 'a' => 'We support card payments, bank transfers, and USSD via Paystack and Monnify — Nigeria\'s most trusted payment gateways.'], ['q' => 'Can I offer discount codes?', 'a' => 'Yes! You can create promo codes with percentage or fixed discounts, set usage limits, and expiry dates from your dashboard.']] as $index => $faq)
                     <div class="glass rounded-2xl overflow-hidden">
                         <button class="w-full flex items-center justify-between px-6 py-5 text-left"
                             x-on:click="open = open === {{ $index }} ? null : {{ $index }}">

@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Sign In — EventPlug')
+@section('title', 'Sign In')
 
 @section('content')
 
@@ -27,7 +27,7 @@
                         <span class="font-display text-2xl">Event<span class="gold-text">Plug</span></span>
                     </a>
                     <h1 class="text-white text-2xl font-bold mb-2">Welcome back</h1>
-                    <p class="text-gray-500 text-sm">Sign in to your EventPlug account</p>
+                    <p class="text-gray-500 text-sm">Sign in to your {{ config('app.name') }} account</p>
                 </div>
 
                 <!-- Session Status -->

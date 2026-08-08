@@ -283,14 +283,14 @@
         <tr>
             <td align="center" style="padding-top:24px;">
                 <p style="margin:0 0 8px; color:#6b7280; font-size:12px;">
-                    This email was sent by <strong>EventPlug</strong> on behalf of the event organizer.
+                    This email was sent by <strong>{{ config('app.name')</strong> on behalf of the event organizer.
                 </p>
                 <p style="margin:0 0 8px; font-size:12px;">
-                    <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">EventPlug</a> •
+                    <a href="{{ url('/') }}" style="color:#f59e0b; text-decoration:none;">{{ config('app.name')</a> •
                     <a href="#" style="color:#f59e0b; text-decoration:none;">Terms</a> •
                     <a href="#" style="color:#f59e0b; text-decoration:none;">Privacy</a>
                 </p>
-                <p style="margin:0; color:#6b7280; font-size:12px;">© {{ date('Y') }} EventPlug. All
+                <p style="margin:0; color:#6b7280; font-size:12px;">© {{ date('Y') }} {{ config('app.name'). All
                     rights reserved.</p>
             </td>
         </tr>

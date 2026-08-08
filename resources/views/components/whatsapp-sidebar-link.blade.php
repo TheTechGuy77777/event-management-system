@@ -1,10 +1,11 @@
 @php
-    $message = 'Hi EventPlug! I need help with my organizer dashboard.';
+    $message = 'Hi ' . config('app.name') . '! I need help with my organizer dashboard.';
     $link = \App\Helpers\WhatsappSupportLink::build($message);
 @endphp
 
 <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-    aria-label="Need help? Chat with EventPlug Support on WhatsApp" title="Need help? Chat with EventPlug Support."
+    aria-label="Chat with {{ config('app.name') }} Support on WhatsApp"
+    title="Need help? Chat with {{ config('app.name') }} Support."
     class="sidebar-link focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 focus-visible:ring-offset-2
 focus-visible:ring-offset-[#0d0d0d]">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

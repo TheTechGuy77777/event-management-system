@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Commission — EventPlug')
+@section('title', 'Commission')
 @section('page-title', 'Commission Settings')
 @section('page-subtitle', 'Manage platform commission rates')
 

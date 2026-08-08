@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Promo Codes — EventPlug')
+@section('title', 'Promo Codes')
 @section('page-title', 'Promo Codes')
 @section('page-subtitle', 'Create and manage discount codes for your events')
 

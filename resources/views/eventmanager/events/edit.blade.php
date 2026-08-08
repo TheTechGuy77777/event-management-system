@@ -175,7 +175,7 @@
                             class="flex items-center glass rounded-xl overflow-hidden border border-white/10 focus-within:border-amber-400/50 transition-all">
                             <span
                                 class="text-gray-500 text-sm px-4 py-3 border-r border-white/10 bg-white/2 whitespace-nowrap">
-                                eventplug.test/events/
+                                {{ request()->getHost() }}/events/
                             </span>
                             <input type="text" name="slug" value="{{ old('slug', $event->slug) }}"
                                 class="flex-1 bg-transparent px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none">
