@@ -4,44 +4,55 @@
 
 @section('content')
 
-    <div class="max-w-3xl mx-auto px-6 py-16">
+    <div x-data="{
+        name: '',
+        email: '',
+        message: '',
+        get whatsappUrl() {
+            const text = `Hi {{ config('app.name') }}! My name is ${this.name || '(not provided)'}, email: ${this.email || '(not provided)'}.%0A%0A${this.message}`;
+            return `https://wa.me/{{ config('services.whatsapp.support_number') }}?text=${encodeURIComponent(text.replace(/%0A/g, '\n'))}`;
+        }
+    }" class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
-        <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
+        <div class="text-center mb-10">
+            <h1 class="text-white text-3xl lg:text-4xl font-bold mb-3">Contact Us</h1>
+            <p class="text-gray-400 text-sm">
+                Have a question or need help? Send us a message and we'll get back to you on WhatsApp.
+            </p>
+        </div>
 
-        <p class="text-gray-600 mb-8">
-            Have questions? Fill out the form below.
-        </p>
+        <div class="glass rounded-3xl p-8">
+            <form @submit.prevent="window.open(whatsappUrl, '_blank')" class="space-y-5">
 
-        <form class="space-y-6">
+                <div>
+                    <label class="text-gray-400 text-sm font-medium mb-2 block">Full Name</label>
+                    <input type="text" x-model="name" placeholder="John Doe" required
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                </div>
 
-            <div>
-                <label class="block mb-2 font-medium">Full Name</label>
+                <div>
+                    <label class="text-gray-400 text-sm font-medium mb-2 block">Email Address</label>
+                    <input type="email" x-model="email" placeholder="you@example.com" required
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all">
+                </div>
 
-                <input type="text"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-amber-400 focus:outline-none">
-            </div>
+                <div>
+                    <label class="text-gray-400 text-sm font-medium mb-2 block">Message</label>
+                    <textarea x-model="message" rows="5" placeholder="How can we help?" required
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-amber-400/50 transition-all resize-none"></textarea>
+                </div>
 
-            <div>
-                <label class="block mb-2 font-medium">Email Address</label>
+                <button type="submit"
+                    class="btn-gold w-full py-3.5 rounded-xl text-black font-semibold text-sm flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    Send via WhatsApp
+                </button>
 
-                <input type="email"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-amber-400 focus:outline-none">
-            </div>
-
-            <div>
-                <label class="block mb-2 font-medium">Message</label>
-
-                <textarea rows="6"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-amber-400 focus:outline-none"></textarea>
-            </div>
-
-            <button type="submit"
-                class="bg-amber-400 hover:bg-amber-500 text-black font-semibold px-6 py-3 rounded-lg transition duration-200">
-                Send Message
-            </button>
-
-        </form>
-
+                <p class="text-gray-600 text-xs text-center">
+                    This opens WhatsApp with your message pre-filled — just hit send there to reach us.
+                </p>
+            </form>
+        </div>
     </div>
 
 @endsection

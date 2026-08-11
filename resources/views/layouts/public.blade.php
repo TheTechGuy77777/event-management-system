@@ -457,21 +457,19 @@
                     <div>
                         <h4 class="text-white font-semibold text-sm mb-5">Legal</h4>
                         <ul class="space-y-3">
-                            <li><a href="#"
+                            <li><a href="{{ route('terms') }}"
                                     class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">Terms
                                     & Conditions</a></li>
-                            <li><a href="#"
+                            <li><a href="{{ route('privacy') }}"
                                     class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">Privacy
                                     Policy</a></li>
-                            <li><a href="#"
+                            <li><a href="{{ route('refund-policy') }}"
                                     class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">Refund
                                     Policy</a></li>
-                            <li>
-                                <a href="{{ route('contact') }}"
+                            <li><a href="{{ route('contact') }}"
                                     class="text-gray-500 hover:text-amber-400 text-sm transition-colors duration-200">
                                     Contact Us
-                                </a>
-                            </li>
+                                </a></li>
                         </ul>
                     </div>
                 </div>

@@ -79,7 +79,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach ([['icon' => 'fa-handshake', 'title' => 'Transparency', 'desc' => 'No hidden fees. No confusing pricing. Just a simple 5% commission on paid tickets.'], ['icon' => 'fa-shield-halved', 'title' => 'Security', 'desc' => 'Your money and your attendees\' data are always protected with enterprise-grade security.'], ['icon' => 'fa-heart', 'title' => 'Community', 'desc' => 'We\'re building more than a platform — we\'re building a community of African event creators.'], ['icon' => 'fa-rocket', 'title' => 'Innovation', 'desc' => 'We\'re constantly improving {{ config('app.name') }} with features that matter to African event organizers.']] as $value)
+                @foreach ([['icon' => 'fa-handshake', 'title' => 'Transparency', 'desc' => 'No hidden fees. No confusing pricing. Just a simple 5% commission on paid tickets.'], ['icon' => 'fa-shield-halved', 'title' => 'Security', 'desc' => 'Your money and your attendees\' data are always protected with enterprise-grade security.'], ['icon' => 'fa-heart', 'title' => 'Community', 'desc' => 'We\'re building more than a platform — we\'re building a community of African event creators.'], ['icon' => 'fa-rocket', 'title' => 'Innovation', 'desc' => 'We\'re constantly improving ' . config('app.name') . ' with features that matter to African event organizers.']] as $value)
                     <div
                         class="glass rounded-2xl p-6 text-center hover:border-amber-400/20 transition-all duration-300 group">
                         <div
@@ -100,7 +100,8 @@
                     Built with <span class="gold-text">❤️</span> in Nigeria
                 </h2>
                 <p class="text-gray-500 mt-3 max-w-xl mx-auto text-sm">
-                    {{ config('app.name') }} is proudly built and maintained by a team passionate about African events and technology.
+                    {{ config('app.name') }} is proudly built and maintained by a team passionate about African events and
+                    technology.
                 </p>
             </div>
 
@@ -128,7 +129,8 @@
                 Ready to Create Your <span class="gold-text">Next Event?</span>
             </h2>
             <p class="text-gray-400 mb-8 max-w-xl mx-auto">
-                Join hundreds of event organizers already using {{ config('app.name') }} to sell tickets and grow their audience.
+                Join hundreds of event organizers already using {{ config('app.name') }} to sell tickets and grow their
+                audience.
             </p>
             <a href="{{ route('register') }}"
                 class="btn-gold px-10 py-4 rounded-2xl text-black font-bold text-lg inline-block">

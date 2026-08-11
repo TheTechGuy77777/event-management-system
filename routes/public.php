@@ -17,6 +17,17 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return view('public.contact');
 })->name('contact');
+Route::get('/terms', function () {
+    return view('public.terms');
+})->name('terms');
+
+Route::get('/privacy', function () {
+    return view('public.privacy');
+})->name('privacy');
+
+Route::get('/refund-policy', function () {
+    return view('public.refund-policy');
+})->name('refund-policy');
 
 
 // Rate limited routes
