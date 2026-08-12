@@ -237,6 +237,45 @@
                     </div>
                 @endforeach
             </div>
+            {{-- Video Walkthrough --}}
+            <div x-data="{ playing: false, loaded: false }" class="mt-16 max-w-3xl mx-auto">
+                <div class="text-center mb-6">
+                    <h3 class="text-white font-semibold text-lg mb-2">See It In Action</h3>
+                    <p class="text-gray-500 text-sm">
+                        Watch a quick walkthrough — from creating an account to buying your first ticket.
+                    </p>
+                </div>
+
+                <div class="glass rounded-3xl overflow-hidden aspect-video relative">
+                    <template x-if="!playing">
+                        <button @click="playing = true"
+                            class="absolute inset-0 w-full h-full flex items-center justify-center group cursor-pointer"
+                            aria-label="Play walkthrough video">
+                            <img src="{{ asset('images/demo-thumbnail.jpg') }}" alt="Video walkthrough preview"
+                                class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/30"></div>
+                            <div
+                                class="relative z-10 w-20 h-20 gold-gradient rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-play text-black text-2xl ml-1"></i>
+                            </div>
+                        </button>
+                    </template>
+
+                    <template x-if="playing">
+                        <div class="absolute inset-0">
+                            <div x-show="!loaded" class="absolute inset-0 flex items-center justify-center bg-black/60">
+                                <div
+                                    class="w-10 h-10 border-2 border-amber-400/30 border-t-amber-400 rounded-full animate-spin">
+                                </div>
+                            </div>
+                            <iframe
+                                src="https://www.loom.com/embed/9f7f26fbae8e483fa282c4b2ee1b1a09?autoplay=1&hideEmbedTopBar=true"
+                                frameborder="0" allow="autoplay; fullscreen" allowfullscreen
+                                class="absolute inset-0 w-full h-full" @load="loaded = true"></iframe>
+                        </div>
+                    </template>
+                </div>
+            </div>
         </div>
     </section>
 

@@ -30,6 +30,7 @@ class SecurityHeaders
                 . "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://cdnjs.cloudflare.com; "
                 . "connect-src 'self' {$viteOrigin} {$viteWsOrigin}; "
                 . "img-src 'self' data: https:; "
+                . "frame-src 'self' https://www.loom.com; "
                 . "frame-ancestors 'self';";
         } else {
             $csp = "default-src 'self'; "
@@ -38,6 +39,7 @@ class SecurityHeaders
                 . "font-src 'self' data: https://fonts.gstatic.com https://fonts.bunny.net https://cdnjs.cloudflare.com; "
                 . "connect-src 'self'; "
                 . "img-src 'self' data: https:; "
+                . "frame-src 'self' https://www.loom.com; "
                 . "frame-ancestors 'self';";
         }
 

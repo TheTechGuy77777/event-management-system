@@ -11,11 +11,11 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@eventplug.com'],
+            ['email' => env('ADMIN_EMAIL', 'admin@chibuzoconnect.com')],
             [
-                'name' => 'Super Admin',
-                'email' => 'admin@eventplug.com',
-                'password' => Hash::make('Admin@1234'),
+                'name' => env('ADMIN_NAME', 'Super Admin'),
+                'email' => env('ADMIN_EMAIL', 'admin@chibuzoconnect.com'),
+                'password' => Hash::make(env('ADMIN_PASSWORD')),
                 'role' => 'admin',
                 'is_active' => true,
                 'is_banned' => false,
